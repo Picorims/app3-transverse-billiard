@@ -78,7 +78,7 @@ La branche courrante est affichée entre parenthèses en bleu dans Git Bash. Dan
     - si la branche n'existe pas: `git push -u origin <nom>` (faire un TAB au niveau du nom pour autocompléter le nom de la branche)
 - sauvegarder le travail:
     - `git status`: voir les changements
-        - en reouge, à ajouté via add,
+        - en rouge, à ajouté via add,
         - en vert, déjà pris en compte.
     - `git add *`: prendre en compte tous les changements
     - `git commit -m "mon message"`: sauvegarder le travail sur la branche (uniquement ce qui a été ajouté via add)
