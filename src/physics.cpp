@@ -1,11 +1,11 @@
 #include "physics.h"
 
-void PhysicsEngine::collision(PhysicsForm &form)
+void PhysicsEngine::collision(IPhysicsForm &form)
 {
     // TODO (cf diagramme objet -> commentaires)
 }
 
-void PhysicsEngine::collision(Sphere &sphere, Cube_face &plan)
+void PhysicsEngine::collision(Sphere &sphere, Plan &plan)
 {
     // TODO
 }
@@ -15,7 +15,7 @@ void PhysicsEngine::collision(Sphere &sphere1, Sphere &sphere2)
     // TODO
 }
 
-void PhysicsEngine::addForm(PhysicsForm &form)
+void PhysicsEngine::addForm(IPhysicsForm &form)
 {
     // TODO
 }

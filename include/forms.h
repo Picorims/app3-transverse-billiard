@@ -9,7 +9,7 @@
 #include "animation.h"
 
 // interface applied to forms that can be used in the physics engine
-class PhysicsForm {};
+class IPhysicsForm {};
 
 
 class Color
@@ -48,7 +48,7 @@ public:
 
 
 // A particular Form
-class Sphere : public Form, public PhysicsForm
+class Sphere : public Form, public IPhysicsForm
 {
 private:
     // The sphere center is aligned with the coordinate system origin
@@ -67,7 +67,7 @@ public:
 
 
 // A face of a cube
-class Cube_face : public Form, public PhysicsForm
+class Plan : public Form, public IPhysicsForm
 {
 private:
     Vector vdir1, vdir2;
@@ -76,7 +76,7 @@ private:
     GLuint texture_id;
 
 public:
-    Cube_face(Vector v1 = Vector(1,0,0), Vector v2 = Vector(0,0,1),
+    Plan(Vector v1 = Vector(1,0,0), Vector v2 = Vector(0,0,1),
           Point org = Point(), double l = 1.0, double w = 1.0,
           Color cl = Color());
     void update(double delta_t);
@@ -87,7 +87,7 @@ public:
 
 class Table {
 private:
-    std::vector<Cube_face> plans;
+    std::vector<Plan> plans;
     double length, width, height; // dimensions
 public:
     Table(double length, double width, double height);

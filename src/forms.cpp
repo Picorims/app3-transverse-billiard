@@ -98,7 +98,7 @@ void Sphere::render()
 }
 
 
-Cube_face::Cube_face(Vector v1, Vector v2, Point org, double l, double w, Color cl)
+Plan::Plan(Vector v1, Vector v2, Point org, double l, double w, Color cl)
 {
     vdir1 = 1.0 / v1.norm() * v1;
     vdir2 = 1.0 / v2.norm() * v2;
@@ -109,7 +109,7 @@ Cube_face::Cube_face(Vector v1, Vector v2, Point org, double l, double w, Color 
 }
 
 
-void Cube_face::update(double delta_t)
+void Plan::update(double delta_t)
 {
     // Angles update for the animation example
     // Ceci n est qu un exemple d animation
@@ -119,7 +119,7 @@ void Cube_face::update(double delta_t)
 }
 
 
-void Cube_face::render()
+void Plan::render()
 {
     // Les quatre coins de la face
     Point p1 = Point();
@@ -155,5 +155,5 @@ void Cube_face::render()
 }
 
 Table::Table(double length, double width, double height) {
-    // TODO créer les 5 plans et les ajouter au moteur physique
+    // TODO crï¿½er les 5 plans et les ajouter au moteur physique
 }
