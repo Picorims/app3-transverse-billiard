@@ -199,6 +199,7 @@ void render(Form* formlist[MAX_FORMS_NUMBER], const Point &cam_pos, double angle
     glMatrixMode( GL_MODELVIEW );
     glLoadIdentity();
 
+    //this section will take the variables from the camera class to place it into the scene
     // Set the camera position and parameters
     gluLookAt(cam_pos.x,cam_pos.y,cam_pos.z, 0.0,0.0,0.0, 0.0,1.0,0.0);
     // Isometric view
