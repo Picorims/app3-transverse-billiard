@@ -13,6 +13,8 @@
 #include "geometry.h"
 // Module for generating and rendering forms
 #include "forms.h"
+// Module for the physics engine
+#include "physics.h"
 
 
 /***************************************************************************/

@@ -2,6 +2,7 @@
 #include <SDL2/SDL_opengl.h>
 #include <GL/GLU.h>
 #include "forms.h"
+#include "physics.h"
 
 
 void Form::update(double delta_t)
@@ -151,4 +152,8 @@ void Cube_face::render()
     // Ne plus appliquer la texture pour la suite
     glDisable(GL_TEXTURE_2D);
 
+}
+
+Table::Table(double length, double width, double height) {
+    // TODO créer les 5 plans et les ajouter au moteur physique
 }
