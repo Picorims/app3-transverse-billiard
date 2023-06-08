@@ -30,4 +30,9 @@ public:
 
 };
 
+int react (Vector* Vin, Sphere* Sph);
+int pScalaire (Vector* V1, Vector* Vi2);
+void diffVector(Vector* V1, Vector* V2, Vector* Vres);
+
+
 #endif // ANIMATION_H_INCLUDED
