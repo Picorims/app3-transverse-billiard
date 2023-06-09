@@ -1,26 +1,26 @@
 #include "physics.h"
 
-void PhysicsEngine::collision(Sphere &sphere, Plan &plan)
+void CollisionEngine::collision(Sphere &sphere, Plan &plan)
 {
     // TODO
 }
 
-void PhysicsEngine::collision(Sphere &sphere1, Sphere &sphere2)
+void CollisionEngine::collision(Sphere &sphere1, Sphere &sphere2)
 {
     // TODO
 }
 
-void PhysicsEngine::addForm(Sphere &form)
+void CollisionEngine::addForm(Sphere &form)
 {
     sphere_list.push_back(form);
 }
 
-void PhysicsEngine::addForm(Plan &form)
+void CollisionEngine::addForm(Plan &form)
 {
     plan_list.push_back(form);
 }
 
-void PhysicsEngine::collide()
+void CollisionEngine::collide()
 {
     unsigned short total_size = sphere_list.size() + plan_list.size();
     for (unsigned short i = 0; i < total_size; i++)

@@ -7,7 +7,7 @@
 // singleton that owns all objects that have physics
 // and performs collision calculation as well as position
 // update
-class PhysicsEngine {
+class CollisionEngine {
 private:
     std::vector<Plan> plan_list;
     std::vector<Sphere> sphere_list;

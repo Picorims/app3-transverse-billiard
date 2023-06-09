@@ -44,7 +44,7 @@ bool init(SDL_Window** window, SDL_GLContext* context);
 bool initGL();
 
 // Updating forms for animation
-void update(Form* formlist[MAX_FORMS_NUMBER], double delta_t, PhysicsEngine* engine);
+void update(Form* formlist[MAX_FORMS_NUMBER], double delta_t, CollisionEngine* engine);
 
 // Renders scene to the screen
 void render(Form* formlist[MAX_FORMS_NUMBER], const Point &cam_pos, double angle);
@@ -181,7 +181,7 @@ bool initGL()
     return success;
 }
 
-void update(Form* formlist[MAX_FORMS_NUMBER], double delta_t, PhysicsEngine* engine)
+void update(Form* formlist[MAX_FORMS_NUMBER], double delta_t, CollisionEngine* engine)
 {
     engine->collide();
 
@@ -306,7 +306,7 @@ int main(int argc, char* args[])
     SDL_GLContext gContext;
 
     // Physics Engine
-    PhysicsEngine engine;
+    CollisionEngine engine;
 
 
     // Start up SDL and create window
