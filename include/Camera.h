@@ -7,19 +7,21 @@ class Camera
     public:
         Camera();
         virtual ~Camera();
-        void setPos(int x1,int y1);
+        void setPos(int x1,int y1,int z1);
+        void setX(int x1); //used to set the camera zoom
         void setrot(int Hori,int Vert);
-        void updateCamera();
+        void update(int* pos);
 
-        int x(){ return x;}
-        int y() {return y;}
-        int rotHori() {return rotHori;}
-        int rotVert() {return rotVert;}
+        int getx(){ return x;}
+        int gety() {return y;}
+        int getz() {return z;}
+        int getHori() {return rotHori;}
+        int getVert() {return rotVert;}
 
     protected:
 
     private:
-        int x,y;
+        int x,y,z;
         int rotHori, rotVert;
 };
 
