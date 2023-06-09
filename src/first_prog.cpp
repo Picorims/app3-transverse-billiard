@@ -202,7 +202,8 @@ void render(Form* formlist[MAX_FORMS_NUMBER],  Camera camera, double angle)
 
     //this section will take the variables from the camera class to place it into the scene
     // Set the camera position and parameters
-    gluLookAt(camera.getx(),camera.gety(),camera.getz(), 0.0,0.0,0.0, 0.0,1.0,0.0);
+    std::cout << "x " <<camera.getlookx() << " y " << camera.getlooky()<< " z " << camera.getlookz() << std::endl;
+    gluLookAt(camera.getx(),camera.gety(),camera.getz(), camera.getlookx(),camera.getlooky(),camera.getlookz(), 0.0,1.0,0.0);
     // Isometric view
     glRotated(camera.getVert(), 0, 0, 1);
     glRotated(camera.getHori(), 0, 1, 0);
@@ -298,7 +299,7 @@ int createTextureFromImage (const char* filename, GLuint* textureID)
 int main(int argc, char* args[])
 {
     int mousePosition[4] = {0,0,0,0}; // position 0 and 1 are the current tick mouse position while 2 and 3 are previous tick position
-    Camera camera; camera.setPos(5,0,0); camera.setrot(0,0);
+    Camera camera;
     bool mClick = false;
 
     // The window we'll be rendering to
@@ -459,16 +460,26 @@ int main(int argc, char* args[])
                         quit = true;
                         break;
                     case SDLK_z:
-                        hCam += 0.5;
+                        camera.setPos(camera.getx(),camera.gety() + 1,camera.getz());
                         break;
                     case SDLK_s:
-                        hCam -= 0.5;
+                        camera.setPos(camera.getx(),camera.gety() - 1,camera.getz());
                         break;
-                    case SDLK_o:
-                        rho += 5;
+                    case SDLK_RIGHT:
+                        camera.setPos(camera.getx(),camera.gety(),camera.getz() - 1);
+                        camera.lookAt(camera.getlookx(),camera.getlooky(),camera.getlookz() - 1);
                         break;
-                    case SDLK_p:
-                        rho -= 5;
+                    case SDLK_LEFT:
+                        camera.setPos(camera.getx(),camera.gety(),camera.getz() + 1);
+                        camera.lookAt(camera.getlookx(),camera.getlooky(),camera.getlookz() + 1);
+                        break;
+                    case SDLK_UP:
+                        camera.setPos(camera.getx(),camera.gety() + 1,camera.getz());
+                        camera.lookAt(camera.getlookx(),camera.getlooky() + 1,camera.getlookz());
+                        break;
+                    case SDLK_DOWN:
+                        camera.setPos(camera.getx(),camera.gety() - 1,camera.getz());
+                        camera.lookAt(camera.getlookx(),camera.getlooky() - 1,camera.getlookz());
                         break;
                     default:
                         break;

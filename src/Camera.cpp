@@ -2,12 +2,16 @@
 
 Camera::Camera()
 {
-    //ctor
+    setPos(5,0,0);
+    setrot(0,0);
+    lookAt(0,0,0);
 }
-
+//camera.getlookx(),camera.getlooky(),camera.getlookz()
 Camera::~Camera()
 {
-    //dtor
+    setPos(5,0,0);
+    setrot(0,0);
+    lookAt(0,0,0);
 }
 
 void Camera::setPos(int x1,int y1,int z1){
@@ -15,6 +19,13 @@ void Camera::setPos(int x1,int y1,int z1){
     y = y1;
     z = z1;
 }
+
+void Camera::lookAt(int x1,int y1,int z1){
+    lookx = x1;
+    looky = y1;
+    lookz = z1;
+}
+
 void Camera::setX(int x1){
     x = x1;
 }
