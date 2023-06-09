@@ -33,7 +33,8 @@ Sphere::Sphere(double r, Color cl)
 
 void Sphere::update(double delta_t)
 {
-    /*
+    // TODO update position, speed, acceleration here
+
     // Complete this part
 
     // Exemple d'animation liee a la physique :
@@ -73,7 +74,6 @@ void Sphere::update(double delta_t)
             angle=angle-360;
     }
     this->anim.setTheta(angle);
-    */
 }
 
 
@@ -113,13 +113,13 @@ Plan::Plan(Vector v1, Vector v2, Point org, double l, double w, Color cl)
 
 void Plan::update(double delta_t)
 {
-    /*
+    // TODO update position, speed, acceleration here
+
     // Angles update for the animation example
     // Ceci n est qu un exemple d animation
     // Aucune physique particuliere n est utilisee ici
     anim.setPhi(anim.getPhi()+1);
     anim.setTheta(anim.getTheta()+0.5);
-    */
 }
 
 
