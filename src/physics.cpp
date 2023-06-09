@@ -2,21 +2,23 @@
 
 void CollisionEngine::collision(Sphere &sphere, Plan &plan)
 {
-    // TODO
+    std::cout << "sphere plan" << std::endl;
 }
 
 void CollisionEngine::collision(Sphere &sphere1, Sphere &sphere2)
 {
-    // TODO
+    std::cout << "sphere sphere" << std::endl;
 }
 
 void CollisionEngine::addForm(Sphere &form)
 {
+    std::cout << "added sphere" << std::endl;
     sphere_list.push_back(form);
 }
 
 void CollisionEngine::addForm(Plan &form)
 {
+    std::cout << "added plan" << std::endl;
     plan_list.push_back(form);
 }
 
@@ -31,11 +33,11 @@ void CollisionEngine::collide()
                 // sphere - sphere
                 collision(sphere_list.at(i), sphere_list.at(j));
 
-            } else if (i < sphere_list.size() && j > sphere_list.size()) {
+            } else if (i < sphere_list.size() && j >= sphere_list.size()) {
                 // sphere - plan
                 collision(sphere_list.at(i), plan_list.at(j-sphere_list.size()));
 
-            } else if (i > sphere_list.size() && j > sphere_list.size()) {
+            } else if (i >= sphere_list.size() && j >= sphere_list.size()) {
                 // plan - plan
                 // do nothing
             }
