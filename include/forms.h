@@ -13,7 +13,7 @@ class IPhysicsForm
 {
 protected:
     bool physicsEnabled = true;
-    bool static = false;
+    bool isStatic = false;
 };
 
 
