@@ -18,8 +18,8 @@ void Form::render()
     Point org = anim.getPos();
     glTranslated(org.x, org.y, org.z);
 
-    glRotated(anim.getTheta(), 1,0,0);
-    glRotated(anim.getPhi(), 0,1,0);
+    //glRotated(anim.getTheta(), 1,0,0);
+    //glRotated(anim.getPhi(), 0,1,0);
 
     glColor3f(col.r, col.g, col.b);
 }

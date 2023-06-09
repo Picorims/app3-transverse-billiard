@@ -11,10 +11,13 @@ class PhysicsEngine {
 private:
     std::vector<IPhysicsForm> forms_list;
 
+    //void collision(IPhysicsForm &form);
+    //void collision(Sphere &sphere, Plan &plan);
+    //void collision(Sphere &sphere1, Sphere &sphere2);
+public:
     void collision(IPhysicsForm &form);
     void collision(Sphere &sphere, Plan &plan);
     void collision(Sphere &sphere1, Sphere &sphere2);
-public:
     void addForm(IPhysicsForm &form);
     void update();
 };

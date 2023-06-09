@@ -87,6 +87,8 @@ public:
     void update(double delta_t);
     void setTexture(GLuint textureid) {texture_id = textureid;}
     void render();
+    Vector getDir1(){return vdir1;}
+    Vector getDir2(){return vdir2;}
 };
 
 
