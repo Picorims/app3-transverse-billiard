@@ -13,6 +13,8 @@
 #include "geometry.h"
 // Module for generating and rendering forms
 #include "forms.h"
+// Module for the physics engine
+#include "physics.h"
 
 
 /***************************************************************************/
@@ -337,25 +339,25 @@ int main(int argc, char* args[])
         }
         // Create here specific forms and add them to the list...
         // Don't forget to update the actual number_of_forms !
-        Cube_face *pFace = NULL;
-        pFace = new Cube_face(Vector(1,0,0), Vector(0,1,0), Point(-0.5, -0.5, -0.5), 1, 1, ORANGE); // For the cube
-        pFace = new Cube_face(Vector(1,0,0), Vector(0,1,0), Point(0.5, 0, 0.5), 1, 1, WHITE); // For the animation
+        Plan *pFace = NULL;
+        pFace = new Plan(Vector(1,0,0), Vector(0,1,0), Point(-0.5, -0.5, -0.5), 1, 1, ORANGE); // For the cube
+        pFace = new Plan(Vector(1,0,0), Vector(0,1,0), Point(0.5, 0, 0.5), 1, 1, WHITE); // For the animation
         pFace->setTexture(textureid_1);
         forms_list[number_of_forms] = pFace;
         number_of_forms++;
-//        pFace = new Cube_face(Vector(1,0,0), Vector(0,1,0), Point(-0.5, -0.5, 0.5), 1, 1, RED);
+//        pFace = new Plan(Vector(1,0,0), Vector(0,1,0), Point(-0.5, -0.5, 0.5), 1, 1, RED);
 //        forms_list[number_of_forms] = pFace;
 //        number_of_forms++;
-//        pFace = new Cube_face(Vector(1,0,0), Vector(0,0,1), Point(-0.5, -0.5, -0.5), 1, 1, BLUE);
+//        pFace = new Plan(Vector(1,0,0), Vector(0,0,1), Point(-0.5, -0.5, -0.5), 1, 1, BLUE);
 //        forms_list[number_of_forms] = pFace;
 //        number_of_forms++;
-//        pFace = new Cube_face(Vector(1,0,0), Vector(0,0,1), Point(-0.5, 0.5, -0.5), 1, 1, YELLOW);
+//        pFace = new Plan(Vector(1,0,0), Vector(0,0,1), Point(-0.5, 0.5, -0.5), 1, 1, YELLOW);
 //        forms_list[number_of_forms] = pFace;
 //        number_of_forms++;
-//        pFace = new Cube_face(Vector(0,1,0), Vector(0,0,1), Point(-0.5, -0.5, -0.5), 1, 1, WHITE);
+//        pFace = new Plan(Vector(0,1,0), Vector(0,0,1), Point(-0.5, -0.5, -0.5), 1, 1, WHITE);
 //        forms_list[number_of_forms] = pFace;
 //        number_of_forms++;
-//        pFace = new Cube_face(Vector(0,1,0), Vector(0,0,1), Point(0.5, -0.5, -0.5), 1, 1, GREEN);
+//        pFace = new Plan(Vector(0,1,0), Vector(0,0,1), Point(0.5, -0.5, -0.5), 1, 1, GREEN);
 //        forms_list[number_of_forms] = pFace;
 //        number_of_forms++;
 

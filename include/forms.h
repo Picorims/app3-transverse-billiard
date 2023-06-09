@@ -1,8 +1,20 @@
 #ifndef FORMS_H_INCLUDED
 #define FORMS_H_INCLUDED
 
+#include <SDL2/SDL_opengl.h>
+#include <GL/GLU.h>
+#include <vector>
+
 #include "geometry.h"
 #include "animation.h"
+
+// interface applied to forms that can be used in the physics engine
+class IPhysicsForm
+{
+protected:
+    bool physicsEnabled = true;
+    bool static = false;
+};
 
 
 class Color
@@ -41,7 +53,7 @@ public:
 
 
 // A particular Form
-class Sphere : public Form
+class Sphere : public Form, public IPhysicsForm
 {
 private:
     // The sphere center is aligned with the coordinate system origin
@@ -60,7 +72,7 @@ public:
 
 
 // A face of a cube
-class Cube_face : public Form
+class Plan : public Form, public IPhysicsForm
 {
 private:
     Vector vdir1, vdir2;
@@ -69,12 +81,21 @@ private:
     GLuint texture_id;
 
 public:
-    Cube_face(Vector v1 = Vector(1,0,0), Vector v2 = Vector(0,0,1),
+    Plan(Vector v1 = Vector(1,0,0), Vector v2 = Vector(0,0,1),
           Point org = Point(), double l = 1.0, double w = 1.0,
           Color cl = Color());
     void update(double delta_t);
     void setTexture(GLuint textureid) {texture_id = textureid;}
     void render();
+};
+
+
+class Table {
+private:
+    std::vector<Plan> plans;
+    double length, width, height; // dimensions
+public:
+    Table(double length, double width, double height);
 };
 
 #endif // FORMS_H_INCLUDED
