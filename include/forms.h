@@ -9,7 +9,12 @@
 #include "animation.h"
 
 // interface applied to forms that can be used in the physics engine
-class IPhysicsForm {};
+class IPhysicsForm
+{
+protected:
+    bool physicsEnabled = true;
+    bool static = false;
+};
 
 
 class Color
