@@ -297,6 +297,7 @@ int createTextureFromImage (const char* filename, GLuint* textureID)
 /***************************************************************************/
 int main(int argc, char* args[])
 {
+    int cptCol = 0;
     // The window we'll be rendering to
     SDL_Window* gWindow = NULL;
 
@@ -398,10 +399,10 @@ int main(int argc, char* args[])
         Sphere* pSphere = NULL;
         Animation sphAnim;
         pSphere = new Sphere(0.1, WHITE);
-        sphAnim.setPos(Point(0.5,1.5,0.5));
+        sphAnim.setPos(Point(0,1,0.5));
         //sphAnim.setPhi(0.1); // angle en degre
         //sphAnim.setTheta(0.2); // angle en degre
-        //sphAnim.setSpeed(Vector(0,-0.9,0)); // v initiale colineaire a Ox
+        sphAnim.setSpeed(Vector(0.1,0,0)); // v initiale colineaire a Ox
         pSphere->setAnim(sphAnim);
         pSphere->setTexture(textureid_1);
         pSphere->getAnim().setPhi(1);
@@ -414,8 +415,13 @@ int main(int argc, char* args[])
         // While application is running
         while(!quit)
         {
+            cptCol++;
+            if (cptCol >= 21000)
+            {
+                engine.collision(*pSphere, *pFace);
+                cptCol = 0;
+            }
 
-            engine.collision(*pSphere, *pFace);
 
             // Handle events on queue
             while(SDL_PollEvent(&event) != 0)

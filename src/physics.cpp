@@ -8,6 +8,7 @@ void PhysicsEngine::collision(IPhysicsForm &form)
 
 void PhysicsEngine::collision(Sphere &sphere, Plan &plan)
 {
+    float atenuation = 0.8;
     Vector Nplan = plan.getDir1()^plan.getDir2();
     Vector PlanSphere;
     PlanSphere.x = plan.getAnim().getPos().x - sphere.getAnim().getPos().x;
@@ -16,11 +17,11 @@ void PhysicsEngine::collision(Sphere &sphere, Plan &plan)
 
 
     Vector Vcol = (PlanSphere*Nplan)*Nplan;
-    if (Vcol.norm() <= sphere.getRadius()+0.1)
+    if (Vcol.norm() <= sphere.getRadius())
     {
-        Vector Vout = (sphere.getAnim().getSpeed()^Nplan)^Nplan;
-        std::cout << Nplan << Vout << std::endl;
-        sphere.getAnim().getSpeed() = Vout;
+        Vector Vout = Vector(sphere.getAnim().getSpeed().x*atenuation, -sphere.getAnim().getSpeed().y*atenuation, sphere.getAnim().getSpeed().z*atenuation);
+        std::cout << Vout << std::endl;
+        sphere.getAnim().setSpeed(Vout);
     }
 }
 
