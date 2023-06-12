@@ -45,7 +45,7 @@ bool init(SDL_Window** window, SDL_GLContext* context);
 bool initGL();
 
 // Updating forms for animation
-void update(Form* formlist[MAX_FORMS_NUMBER], double delta_t);
+void update(Form* formlist[MAX_FORMS_NUMBER], double delta_t, CollisionEngine* engine);
 
 // Renders scene to the screen
 void render(Form* formlist[MAX_FORMS_NUMBER], const Point &cam_pos, double angle);
@@ -182,8 +182,11 @@ bool initGL()
     return success;
 }
 
-void update(Form* formlist[MAX_FORMS_NUMBER], double delta_t)
+void update(Form* formlist[MAX_FORMS_NUMBER], double delta_t, CollisionEngine* engine)
 {
+    std::cout << "UPDATE ! ===============" << std::endl;
+    engine->collide();
+
     // Update the list of forms
     unsigned short i = 0;
     while(formlist[i] != NULL)
@@ -310,6 +313,9 @@ int main(int argc, char* args[])
     // OpenGL context
     SDL_GLContext gContext;
 
+    // Physics Engine
+    CollisionEngine engine;
+
 
     // Start up SDL and create window
     if( !init(&gWindow, &gContext))
@@ -352,6 +358,9 @@ int main(int argc, char* args[])
         pFace->setTexture(textureid_1);
         forms_list[number_of_forms] = pFace;
         number_of_forms++;
+
+        engine.addForm(*pFace);
+
 //        pFace = new Plan(Vector(1,0,0), Vector(0,1,0), Point(-0.5, -0.5, 0.5), 1, 1, RED);
 //        forms_list[number_of_forms] = pFace;
 //        number_of_forms++;
@@ -382,6 +391,8 @@ int main(int argc, char* args[])
         forms_list[number_of_forms] = pSphere;
         number_of_forms++;
 
+        engine.addForm(*pSphere);
+
         pSphere = new Sphere(0.3, RED);
         Animation sphAnim2;
         sphAnim2.setPos(Point(1,1,0));
@@ -390,6 +401,8 @@ int main(int argc, char* args[])
         pSphere->setTexture(textureid_2);
         forms_list[number_of_forms] = pSphere;
         number_of_forms++;
+
+        engine.addForm(*pSphere);
 
         // Get first "current time"
         previous_time_anim = previous_time_render = SDL_GetTicks();
@@ -500,7 +513,7 @@ int main(int argc, char* args[])
             if (elapsed_time_anim > ANIM_DELAY)
             {
                 previous_time_anim = current_time;
-                update(forms_list, 1e-3 * elapsed_time_anim); // International system units : seconds
+                update(forms_list, 1e-3 * elapsed_time_anim, &engine); // International system units : seconds
             }
 
             // Render the scene
