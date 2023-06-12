@@ -1,14 +1,11 @@
 #include "physics.h"
 #include "geometry.h"
 
-void PhysicsEngine::collision(IPhysicsForm &form)
+void CollisionEngine::collision(Sphere &sphere, Plan &plan)
 {
-    // TODO (cf diagramme objet -> commentaires)
-}
+    std::cout << "sphere plan" << std::endl;
 
-void PhysicsEngine::collision(Sphere &sphere, Plan &plan)
-{
-    float atenuation = 0.8;
+    float atenuation = 1;
     Vector Nplan = plan.getDir1()^plan.getDir2();
     Vector PlanSphere;
     PlanSphere.x = plan.getAnim().getPos().x - sphere.getAnim().getPos().x;
@@ -25,17 +22,42 @@ void PhysicsEngine::collision(Sphere &sphere, Plan &plan)
     }
 }
 
-void PhysicsEngine::collision(Sphere &sphere1, Sphere &sphere2)
+void CollisionEngine::collision(Sphere &sphere1, Sphere &sphere2)
 {
-    // TODO
+    std::cout << "sphere sphere" << std::endl;
 }
 
-void PhysicsEngine::addForm(IPhysicsForm &form)
+void CollisionEngine::addForm(Sphere &form)
 {
-    // TODO
+    std::cout << "added sphere" << std::endl;
+    sphere_list.push_back(form);
 }
 
-void PhysicsEngine::update()
+void CollisionEngine::addForm(Plan &form)
 {
-    // TODO (cf diagramme objet -> commentaires)
+    std::cout << "added plan" << std::endl;
+    plan_list.push_back(form);
+}
+
+void CollisionEngine::collide()
+{
+    unsigned short total_size = sphere_list.size() + plan_list.size();
+    for (unsigned short i = 0; i < total_size; i++)
+    {
+        for (unsigned short j = i+1; j < total_size; j++)
+        {
+            if (i < sphere_list.size() && j < sphere_list.size()) {
+                // sphere - sphere
+                collision(sphere_list.at(i), sphere_list.at(j));
+
+            } else if (i < sphere_list.size() && j >= sphere_list.size()) {
+                // sphere - plan
+                collision(sphere_list.at(i), plan_list.at(j-sphere_list.size()));
+
+            } else if (i >= sphere_list.size() && j >= sphere_list.size()) {
+                // plan - plan
+                // do nothing
+            }
+        }
+    }
 }
