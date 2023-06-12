@@ -35,7 +35,7 @@ const Uint32 ANIM_DELAY = 10;
 
 // Render actualization delay 40 (in ms) => 25 updates per second
 // 1000 / x = y => FRAME_DELAY = y for a framerate of x
-const Uint32 FRAME_DELAY = 40;
+const Uint32 FRAME_DELAY = 5;
 
 
 // Starts up SDL, creates window, and initializes OpenGL
@@ -405,24 +405,22 @@ int main(int argc, char* args[])
         number_of_forms++;
 */
 
-        CollisionEngine engine;
-
         Plan *pFace = NULL;
-        pFace = new Plan(Vector(1,0,0), Vector(0,0,1), Point(0, 0, 0), 1, 1, WHITE); // For the animation
+        pFace = new Plan(Vector(1,0,0), Vector(0,0,1), Point(0, 1, 0), 1, 1, WHITE); // For the animation
         forms_list[number_of_forms] = pFace;
         number_of_forms++;
 
-        engine.addForm(*pFace);
+        engine.addForm(pFace);
 
         // Spheres
 
         Sphere* pSphere = NULL;
         Animation sphAnim;
         pSphere = new Sphere(0.1, WHITE);
-        sphAnim.setPos(Point(0,1,0.5));
+        sphAnim.setPos(Point(0,2,0.5));
         //sphAnim.setPhi(0.1); // angle en degre
         //sphAnim.setTheta(0.2); // angle en degre
-        sphAnim.setSpeed(Vector(0.1,0,0)); // v initiale colineaire a Ox
+        sphAnim.setSpeed(Vector(0.5,0,0)); // v initiale colineaire a Ox
         pSphere->setAnim(sphAnim);
         pSphere->setTexture(textureid_1);
         pSphere->getAnim().setPhi(1);
@@ -430,7 +428,7 @@ int main(int argc, char* args[])
         number_of_forms++;
 
 
-        engine.addForm(*pSphere);
+        engine.addForm(pSphere);
 
         // Get first "current time"
         previous_time_anim = previous_time_render = SDL_GetTicks();

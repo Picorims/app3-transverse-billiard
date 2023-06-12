@@ -1,39 +1,50 @@
 #include "physics.h"
 #include "geometry.h"
 
-void CollisionEngine::collision(Sphere &sphere, Plan &plan)
+void CollisionEngine::collision(Sphere* sphere, Plan* plan)
 {
     std::cout << "sphere plan" << std::endl;
 
-    float atenuation = 1;
-    Vector Nplan = plan.getDir1()^plan.getDir2();
+    float atenuation = 0.995;
+    float atenuation2 = 0.95;
+    Vector Nplan = plan->getDir1()^plan->getDir2();
     Vector PlanSphere;
-    PlanSphere.x = plan.getAnim().getPos().x - sphere.getAnim().getPos().x;
-    PlanSphere.y = plan.getAnim().getPos().y - sphere.getAnim().getPos().y;
-    PlanSphere.z = plan.getAnim().getPos().z - sphere.getAnim().getPos().z;
+    PlanSphere.x = plan->getAnim().getPos().x - sphere->getAnim().getPos().x;
+    PlanSphere.y = plan->getAnim().getPos().y - sphere->getAnim().getPos().y;
+    PlanSphere.z = plan->getAnim().getPos().z - sphere->getAnim().getPos().z;
 
 
     Vector Vcol = (PlanSphere*Nplan)*Nplan;
-    if (Vcol.norm() <= sphere.getRadius())
+    if (Vcol.norm() <= sphere->getRadius())
     {
-        Vector Vout = Vector(sphere.getAnim().getSpeed().x*atenuation, -sphere.getAnim().getSpeed().y*atenuation, sphere.getAnim().getSpeed().z*atenuation);
+        Vector Vout = Vector(sphere->getAnim().getSpeed().x*atenuation, -sphere->getAnim().getSpeed().y*atenuation, sphere->getAnim().getSpeed().z*atenuation);
         std::cout << Vout << std::endl;
-        sphere.getAnim().setSpeed(Vout);
+        if(Vout.y >= 0.1)
+        {
+            sphere->getAnim().setSpeed(Vout);
+        }
+        else
+        {
+            Vout = Vector(Vout.x*atenuation2, 0, Vout.z*atenuation2);
+            sphere->getAnim().setSpeed(Vout);
+            sphere->getAnim().setPos(Point(sphere->getAnim().getPos().x, sphere->getRadius()+plan->getAnim().getPos().y, sphere->getAnim().getPos().z));
+        }
     }
+
 }
 
-void CollisionEngine::collision(Sphere &sphere1, Sphere &sphere2)
+void CollisionEngine::collision(Sphere* sphere1, Sphere* sphere2)
 {
     std::cout << "sphere sphere" << std::endl;
 }
 
-void CollisionEngine::addForm(Sphere &form)
+void CollisionEngine::addForm(Sphere* form)
 {
     std::cout << "added sphere" << std::endl;
     sphere_list.push_back(form);
 }
 
-void CollisionEngine::addForm(Plan &form)
+void CollisionEngine::addForm(Plan* form)
 {
     std::cout << "added plan" << std::endl;
     plan_list.push_back(form);
