@@ -97,7 +97,7 @@ public:
     std::vector<Plan> plans;
 
     Table(double length, double width, double height,
-             Form** forms_list, unsigned short number_of_forms, 
+             Form** forms_list, unsigned short& number_of_forms, 
              Color, Color);
 };
 

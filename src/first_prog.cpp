@@ -367,30 +367,17 @@ int main(int argc, char* args[])
         pTable = new Table(2.24, 1.12, 0.1, forms_list, number_of_forms, GREEN, ORANGE);
         //pTable = new Table(3, 2, 0.5, forms_list, number_of_forms, GREEN, ORANGE); 
 
-        Plan *pFace = NULL;
-        pFace = new Plan(Vector(1,0,0), Vector(0,1,0), Point(-0.5, -0.5, -0.5), 1, 1, ORANGE); // For the cube
-        pFace = new Plan(Vector(1,0,0), Vector(0,1,0), Point(0.5, 0, 0.5), 1, 1, WHITE); // For the animation
-        pFace->setTexture(textureid_1);
-        forms_list[number_of_forms] = pFace;
-        number_of_forms++;
+        // Plan *pFace = NULL;
+        // pFace = new Plan(Vector(1,0,0), Vector(0,1,0), Point(0.5, 0, 0.5), 1, 1, WHITE); // For the animation
+        // pFace->setTexture(textureid_1);
+        // forms_list[number_of_forms] = pFace;
+        // number_of_forms++;
 
-        engine.addForm(*pFace);
+        // pFace = new Plan(Vector(1,0,0), Vector(0,0,1), Point(-0.5, -0.5, -0.5), 1, 1, BLUE);
+        // forms_list[number_of_forms] = pFace;
+        // number_of_forms++;
 
-//        pFace = new Plan(Vector(1,0,0), Vector(0,1,0), Point(-0.5, -0.5, 0.5), 1, 1, RED);
-//        forms_list[number_of_forms] = pFace;
-//        number_of_forms++;
-//        pFace = new Plan(Vector(1,0,0), Vector(0,0,1), Point(-0.5, -0.5, -0.5), 1, 1, BLUE);
-//        forms_list[number_of_forms] = pFace;
-//        number_of_forms++;
-//        pFace = new Plan(Vector(1,0,0), Vector(0,0,1), Point(-0.5, 0.5, -0.5), 1, 1, YELLOW);
-//        forms_list[number_of_forms] = pFace;
-//        number_of_forms++;
-//        pFace = new Plan(Vector(0,1,0), Vector(0,0,1), Point(-0.5, -0.5, -0.5), 1, 1, WHITE);
-//        forms_list[number_of_forms] = pFace;
-//        number_of_forms++;
-//        pFace = new Plan(Vector(0,1,0), Vector(0,0,1), Point(0.5, -0.5, -0.5), 1, 1, GREEN);
-//        forms_list[number_of_forms] = pFace;
-//        number_of_forms++;
+        // engine.addForm(*pFace);
 
         // Spheres
         Sphere* pSphere = NULL;
@@ -446,7 +433,7 @@ int main(int argc, char* args[])
                     quit = true;
                     break;
                 case SDL_MOUSEBUTTONDOWN:
-                    if(event.button.button == SDL_BUTTON_MIDDLE){
+                    if(event.button.button == SDL_BUTTON_LEFT){
                         mClick = true;
                         SDL_GetMouseState( mousePosition, mousePosition + 1 );
                         mousePosition[2] = mousePosition[0];

@@ -158,7 +158,7 @@ void Plan::render()
 
 }
 
-Table::Table(double length, double width, double height, Form** forms_list, unsigned short number_of_forms, Color colSol, Color colMur) {    
+Table::Table(double length, double width, double height, Form** forms_list, unsigned short& number_of_forms, Color colSol, Color colMur) {    
     // Création des 5 plans de la table
     // Plan du Sol : 
     Plan *pSol = NULL;
