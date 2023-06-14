@@ -118,8 +118,8 @@ void Plan::update(double delta_t)
     // Angles update for the animation example
     // Ceci n est qu un exemple d animation
     // Aucune physique particuliere n est utilisee ici
-    anim.setPhi(anim.getPhi()+1);
-    anim.setTheta(anim.getTheta()+0.5);
+    // anim.setPhi(anim.getPhi()+1);
+    // anim.setTheta(anim.getTheta()+0.5);
 }
 
 
@@ -158,6 +158,38 @@ void Plan::render()
 
 }
 
-Table::Table(double length, double width, double height) {
-    // TODO cr�er les 5 plans et les ajouter au moteur physique
-}
+Table::Table(double length, double width, double height, Form** forms_list, unsigned short& number_of_forms, Color colSol, Color colMur) {    
+    // Création des 5 plans de la table
+    // Plan du Sol : 
+    Plan *pSol = NULL;
+    pSol = new Plan(Vector(1, 0, 0), Vector(0, 0, 1), Point(-length/2, 0, -width/2), length, width, colSol);
+    forms_list[number_of_forms] = pSol;
+    number_of_forms++; 
+
+    // Plan du Mur1 : 
+    Plan *pMur1 = NULL;
+    pMur1 = new Plan(Vector(1, 0, 0), Vector(0, 1, 0), Point(-length/2, 0, -width/2), length, height, colMur);
+    forms_list[number_of_forms] = pMur1;
+    number_of_forms++;
+
+    // Plan du Mur2 : 
+    Plan *pMur2 = NULL;
+    pMur2 = new Plan(Vector(0, 0, 1), Vector(0, 1, 0), Point(-length/2, 0, -width/2), width, height, colMur);
+    forms_list[number_of_forms] = pMur2;
+    number_of_forms++;
+
+    // Plan du Mur3 : 
+    Plan *pMur3 = NULL;
+    pMur3 = new Plan(Vector(1, 0, 0), Vector(0, 1, 0), Point(-length/2, 0, width/2), length, height, colMur);
+    forms_list[number_of_forms] = pMur3;
+    number_of_forms++;
+
+    // Plan du Mur4 : 
+    Plan *pMur4 = NULL;
+    pMur4 = new Plan(Vector(0, 0, 1), Vector(0, 1, 0), Point(length/2, 0, -width/2), width, height, colMur);
+    forms_list[number_of_forms] = pMur4;
+    number_of_forms++;
+
+    }
+   
+    

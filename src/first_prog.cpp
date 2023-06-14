@@ -340,6 +340,9 @@ int main(int argc, char* args[])
         GLuint textureid_1, textureid_2;
         createTextureFromImage("resources/images/earth_texture.jpg", &textureid_1);
         createTextureFromImage("resources/images/tiles.bmp", &textureid_2);
+
+        GLuint textureid_sol;
+        createTextureFromImage("resources/images/earth_texture.jpg", &textureid_sol);
         // Textures ready to be enabled (with private member " texture_id" of each form)
 
 
@@ -350,32 +353,25 @@ int main(int argc, char* args[])
         {
             forms_list[i] = NULL;
         }
+
         // Create here specific forms and add them to the list...
         // Don't forget to update the actual number_of_forms !
-        Plan *pFace = NULL;
-        pFace = new Plan(Vector(1,0,0), Vector(0,1,0), Point(-0.5, -0.5, -0.5), 1, 1, ORANGE); // For the cube
-        pFace = new Plan(Vector(1,0,0), Vector(0,1,0), Point(0.5, 0, 0.5), 1, 1, WHITE); // For the animation
-        pFace->setTexture(textureid_1);
-        forms_list[number_of_forms] = pFace;
-        number_of_forms++;
 
-        engine.addForm(*pFace);
+        Table *pTable = NULL;
+        pTable = new Table(2.24, 1.12, 0.1, forms_list, number_of_forms, GREEN, ORANGE);
+        //pTable = new Table(3, 2, 0.5, forms_list, number_of_forms, GREEN, ORANGE);
 
-//        pFace = new Plan(Vector(1,0,0), Vector(0,1,0), Point(-0.5, -0.5, 0.5), 1, 1, RED);
-//        forms_list[number_of_forms] = pFace;
-//        number_of_forms++;
-//        pFace = new Plan(Vector(1,0,0), Vector(0,0,1), Point(-0.5, -0.5, -0.5), 1, 1, BLUE);
-//        forms_list[number_of_forms] = pFace;
-//        number_of_forms++;
-//        pFace = new Plan(Vector(1,0,0), Vector(0,0,1), Point(-0.5, 0.5, -0.5), 1, 1, YELLOW);
-//        forms_list[number_of_forms] = pFace;
-//        number_of_forms++;
-//        pFace = new Plan(Vector(0,1,0), Vector(0,0,1), Point(-0.5, -0.5, -0.5), 1, 1, WHITE);
-//        forms_list[number_of_forms] = pFace;
-//        number_of_forms++;
-//        pFace = new Plan(Vector(0,1,0), Vector(0,0,1), Point(0.5, -0.5, -0.5), 1, 1, GREEN);
-//        forms_list[number_of_forms] = pFace;
-//        number_of_forms++;
+        // Plan *pFace = NULL;
+        // pFace = new Plan(Vector(1,0,0), Vector(0,1,0), Point(0.5, 0, 0.5), 1, 1, WHITE); // For the animation
+        // pFace->setTexture(textureid_1);
+        // forms_list[number_of_forms] = pFace;
+        // number_of_forms++;
+
+        // pFace = new Plan(Vector(1,0,0), Vector(0,0,1), Point(-0.5, -0.5, -0.5), 1, 1, BLUE);
+        // forms_list[number_of_forms] = pFace;
+        // number_of_forms++;
+
+        // engine.addForm(*pFace);
 
         // Spheres
         Sphere* pSphere = NULL;
@@ -431,7 +427,7 @@ int main(int argc, char* args[])
                     quit = true;
                     break;
                 case SDL_MOUSEBUTTONDOWN:
-                    if(event.button.button == SDL_BUTTON_MIDDLE){
+                    if(event.button.button == SDL_BUTTON_LEFT){
                         mClick = true;
                         SDL_GetMouseState( mousePosition, mousePosition + 1 );
                         mousePosition[2] = mousePosition[0];
