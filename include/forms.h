@@ -94,10 +94,13 @@ public:
 
 class Table {
 private:
-    std::vector<Plan> plans;
     double length, width, height; // dimensions
-public:
-    Table(double length, double width, double height);
+public:    
+    std::vector<Plan> plans;
+
+    Table(double length, double width, double height,
+             Form** forms_list, unsigned short& number_of_forms, 
+             Color, Color);
 };
 
 #endif // FORMS_H_INCLUDED
