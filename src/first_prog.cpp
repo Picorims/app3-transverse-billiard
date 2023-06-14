@@ -406,21 +406,35 @@ int main(int argc, char* args[])
 */
 
         Plan *pFace = NULL;
-        pFace = new Plan(Vector(1,0,0), Vector(0,0,1), Point(0, 1, 0), 1, 1, WHITE); // For the animation
+        pFace = new Plan(Vector(1,0,0), Vector(0,0,1), Point(0, 0, 0), 1, 1, WHITE); // For the animation
         forms_list[number_of_forms] = pFace;
         number_of_forms++;
 
         engine.addForm(pFace);
+
+        Plan *pFace2 = NULL;
+        pFace2 = new Plan(Vector(0,0,1), Vector(0,1,0), Point(1, 0, 0), 1, 1, WHITE); // For the animation
+        forms_list[number_of_forms] = pFace2;
+        number_of_forms++;
+
+        engine.addForm(pFace2);
+
+        Plan *pFace3 = NULL;
+        pFace3 = new Plan(Vector(0,0,1), Vector(0,1,0), Point(-1, 0, 0), 1, 1, WHITE); // For the animation
+        forms_list[number_of_forms] = pFace3;
+        number_of_forms++;
+
+        engine.addForm(pFace3);
 
         // Spheres
 
         Sphere* pSphere = NULL;
         Animation sphAnim;
         pSphere = new Sphere(0.1, WHITE);
-        sphAnim.setPos(Point(0,2,0.5));
+        sphAnim.setPos(Point(0,pSphere->getRadius(),0.5));
         //sphAnim.setPhi(0.1); // angle en degre
         //sphAnim.setTheta(0.2); // angle en degre
-        sphAnim.setSpeed(Vector(0.5,0,0)); // v initiale colineaire a Ox
+        sphAnim.setSpeed(Vector(0,0,0)); // v initiale colineaire a Ox
         pSphere->setAnim(sphAnim);
         pSphere->setTexture(textureid_1);
         pSphere->getAnim().setPhi(1);
@@ -529,6 +543,9 @@ int main(int argc, char* args[])
                     case SDLK_DOWN:
                         camera.setPos(camera.getx(),camera.gety() - 1,camera.getz());
                         camera.lookAt(camera.getlookx(),camera.getlooky() - 1,camera.getlookz());
+                        break;
+                    case SDLK_m:
+                        pSphere->getAnim().setSpeed(Vector(5,5,0));
                         break;
                     default:
                         break;
