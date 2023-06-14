@@ -355,14 +355,14 @@ int main(int argc, char* args[])
             forms_list[i] = NULL;
         }
 
-/*
+
         // Create here specific forms and add them to the list...
         // Don't forget to update the actual number_of_forms !
 
         Table *pTable = NULL;
         pTable = new Table(2.24, 1.12, 0.1, forms_list, number_of_forms, GREEN, ORANGE);
         //pTable = new Table(3, 2, 0.5, forms_list, number_of_forms, GREEN, ORANGE);
-
+/*
         // Plan *pFace = NULL;
         // pFace = new Plan(Vector(1,0,0), Vector(0,1,0), Point(0.5, 0, 0.5), 1, 1, WHITE); // For the animation
         // pFace->setTexture(textureid_1);
