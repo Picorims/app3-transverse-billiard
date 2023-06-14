@@ -352,14 +352,14 @@ int main(int argc, char* args[])
         }
         // Create here specific forms and add them to the list...
         // Don't forget to update the actual number_of_forms !
-        Plan *pFace = NULL;
+        /*Plan *pFace = NULL;
         pFace = new Plan(Vector(1,0,0), Vector(0,1,0), Point(-0.5, -0.5, -0.5), 1, 1, ORANGE); // For the cube
         pFace = new Plan(Vector(1,0,0), Vector(0,1,0), Point(0.5, 0, 0.5), 1, 1, WHITE); // For the animation
         pFace->setTexture(textureid_1);
         forms_list[number_of_forms] = pFace;
         number_of_forms++;
 
-        engine.addForm(*pFace);
+        engine.addForm(pFace);*/
 
 //        pFace = new Plan(Vector(1,0,0), Vector(0,1,0), Point(-0.5, -0.5, 0.5), 1, 1, RED);
 //        forms_list[number_of_forms] = pFace;
@@ -381,28 +381,28 @@ int main(int argc, char* args[])
         Sphere* pSphere = NULL;
         Animation sphAnim;
         pSphere = new Sphere(0.4, WHITE);
-        sphAnim.setPos(Point(1.5,0,0));
+        sphAnim.setPos(Point(0,0,0));
         sphAnim.setPhi(0.1); // angle en degre
         sphAnim.setTheta(0.2); // angle en degre
-        sphAnim.setSpeed(Vector(-0.1,0,0)); // v initiale colineaire a Ox
+        sphAnim.setSpeed(Vector(0,0.2,-0.1)); // v initiale colineaire a Ox
         pSphere->setAnim(sphAnim);
         pSphere->setTexture(textureid_1);
         pSphere->getAnim().setPhi(10);
         forms_list[number_of_forms] = pSphere;
         number_of_forms++;
 
-        engine.addForm(*pSphere);
+        engine.addForm(pSphere);
 
         pSphere = new Sphere(0.3, RED);
         Animation sphAnim2;
-        sphAnim2.setPos(Point(1,1,0));
-        sphAnim2.setSpeed(Vector(-0.2,-0.2,0)); // v initiale dans plan x0y
+        sphAnim2.setPos(Point(0,1,0));
+        sphAnim2.setSpeed(Vector(0,0,-0.2)); // v initiale dans plan x0y
         pSphere->setAnim(sphAnim2);
         pSphere->setTexture(textureid_2);
         forms_list[number_of_forms] = pSphere;
         number_of_forms++;
 
-        engine.addForm(*pSphere);
+        engine.addForm(pSphere);
 
         // Get first "current time"
         previous_time_anim = previous_time_render = SDL_GetTicks();
