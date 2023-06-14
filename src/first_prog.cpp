@@ -13,9 +13,10 @@
 #include "geometry.h"
 // Module for generating and rendering forms
 #include "forms.h"
+//Module for Camera control
+#include "Camera.h"
 // Module for the physics engine
 #include "physics.h"
-
 
 /***************************************************************************/
 /* Constants and functions declarations                                    */
@@ -44,7 +45,7 @@ bool init(SDL_Window** window, SDL_GLContext* context);
 bool initGL();
 
 // Updating forms for animation
-void update(Form* formlist[MAX_FORMS_NUMBER], double delta_t);
+void update(Form* formlist[MAX_FORMS_NUMBER], double delta_t, CollisionEngine* engine);
 
 // Renders scene to the screen
 void render(Form* formlist[MAX_FORMS_NUMBER], const Point &cam_pos, double angle);
@@ -181,8 +182,11 @@ bool initGL()
     return success;
 }
 
-void update(Form* formlist[MAX_FORMS_NUMBER], double delta_t)
+void update(Form* formlist[MAX_FORMS_NUMBER], double delta_t, CollisionEngine* engine)
 {
+    std::cout << "UPDATE ! ===============" << std::endl;
+    engine->collide();
+
     // Update the list of forms
     unsigned short i = 0;
     while(formlist[i] != NULL)
@@ -192,7 +196,7 @@ void update(Form* formlist[MAX_FORMS_NUMBER], double delta_t)
     }
 }
 
-void render(Form* formlist[MAX_FORMS_NUMBER], const Point &cam_pos, double angle)
+void render(Form* formlist[MAX_FORMS_NUMBER],  Camera camera, double angle)
 {
     // Clear color buffer and Z-Buffer
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -201,11 +205,13 @@ void render(Form* formlist[MAX_FORMS_NUMBER], const Point &cam_pos, double angle
     glMatrixMode( GL_MODELVIEW );
     glLoadIdentity();
 
+    //this section will take the variables from the camera class to place it into the scene
     // Set the camera position and parameters
-    gluLookAt(cam_pos.x,cam_pos.y,cam_pos.z, 0.0,0.0,0.0, 0.0,1.0,0.0);
+    std::cout << "x " <<camera.getlookx() << " y " << camera.getlooky()<< " z " << camera.getlookz() << std::endl;
+    gluLookAt(camera.getx(),camera.gety(),camera.getz(), camera.getlookx(),camera.getlooky(),camera.getlookz(), 0.0,1.0,0.0);
     // Isometric view
-    glRotated(angle, 0, 1, 0);
-    glRotated(30, 1, 0, -1);
+    glRotated(camera.getVert(), 0, 0, 1);
+    glRotated(camera.getHori(), 0, 1, 0);
 
     // X, Y and Z axis
     glPushMatrix(); // Preserve the camera viewing point for further forms
@@ -297,11 +303,18 @@ int createTextureFromImage (const char* filename, GLuint* textureID)
 /***************************************************************************/
 int main(int argc, char* args[])
 {
+    int mousePosition[4] = {0,0,0,0}; // position 0 and 1 are the current tick mouse position while 2 and 3 are previous tick position
+    Camera camera;
+    bool mClick = false;
+
     // The window we'll be rendering to
     SDL_Window* gWindow = NULL;
 
     // OpenGL context
     SDL_GLContext gContext;
+
+    // Physics Engine
+    CollisionEngine engine;
 
 
     // Start up SDL and create window
@@ -354,11 +367,72 @@ int main(int argc, char* args[])
         pTable = new Table(2.24, 1.12, 0.1, forms_list, number_of_forms, GREEN, ORANGE);
         //pTable = new Table(3, 2, 0.5, forms_list, number_of_forms, GREEN, ORANGE); 
 
+        Plan *pFace = NULL;
+        pFace = new Plan(Vector(1,0,0), Vector(0,1,0), Point(-0.5, -0.5, -0.5), 1, 1, ORANGE); // For the cube
+        pFace = new Plan(Vector(1,0,0), Vector(0,1,0), Point(0.5, 0, 0.5), 1, 1, WHITE); // For the animation
+        pFace->setTexture(textureid_1);
+        forms_list[number_of_forms] = pFace;
+        number_of_forms++;
+
+        engine.addForm(*pFace);
+
+//        pFace = new Plan(Vector(1,0,0), Vector(0,1,0), Point(-0.5, -0.5, 0.5), 1, 1, RED);
+//        forms_list[number_of_forms] = pFace;
+//        number_of_forms++;
+//        pFace = new Plan(Vector(1,0,0), Vector(0,0,1), Point(-0.5, -0.5, -0.5), 1, 1, BLUE);
+//        forms_list[number_of_forms] = pFace;
+//        number_of_forms++;
+//        pFace = new Plan(Vector(1,0,0), Vector(0,0,1), Point(-0.5, 0.5, -0.5), 1, 1, YELLOW);
+//        forms_list[number_of_forms] = pFace;
+//        number_of_forms++;
+//        pFace = new Plan(Vector(0,1,0), Vector(0,0,1), Point(-0.5, -0.5, -0.5), 1, 1, WHITE);
+//        forms_list[number_of_forms] = pFace;
+//        number_of_forms++;
+//        pFace = new Plan(Vector(0,1,0), Vector(0,0,1), Point(0.5, -0.5, -0.5), 1, 1, GREEN);
+//        forms_list[number_of_forms] = pFace;
+//        number_of_forms++;
+
+        // Spheres
+        Sphere* pSphere = NULL;
+        Animation sphAnim;
+        pSphere = new Sphere(0.4, WHITE);
+        sphAnim.setPos(Point(1.5,0,0));
+        sphAnim.setPhi(0.1); // angle en degre
+        sphAnim.setTheta(0.2); // angle en degre
+        sphAnim.setSpeed(Vector(-0.1,0,0)); // v initiale colineaire a Ox
+        pSphere->setAnim(sphAnim);
+        pSphere->setTexture(textureid_1);
+        pSphere->getAnim().setPhi(10);
+        forms_list[number_of_forms] = pSphere;
+        number_of_forms++;
+
+        engine.addForm(*pSphere);
+
+        pSphere = new Sphere(0.3, RED);
+        Animation sphAnim2;
+        sphAnim2.setPos(Point(1,1,0));
+        sphAnim2.setSpeed(Vector(-0.2,-0.2,0)); // v initiale dans plan x0y
+        pSphere->setAnim(sphAnim2);
+        pSphere->setTexture(textureid_2);
+        forms_list[number_of_forms] = pSphere;
+        number_of_forms++;
+
+        engine.addForm(*pSphere);
+
         // Get first "current time"
         previous_time_anim = previous_time_render = SDL_GetTicks();
         // While application is running
         while(!quit)
         {
+            if(mClick){
+                //update mouse posiion
+                mousePosition[2] = mousePosition[0]; //stores the coordinates of where the cursor was on the last tick
+                mousePosition[3] = mousePosition[1];
+                SDL_GetMouseState( mousePosition, mousePosition + 1 ); //stores the coordinate of where the cursor is on the current tick
+                // changes vertical and horizontal rotation in accord to cursor movement
+                camera.update(mousePosition);
+
+            }
             // Handle events on queue
             while(SDL_PollEvent(&event) != 0)
             {
@@ -371,6 +445,39 @@ int main(int argc, char* args[])
                 case SDL_QUIT:
                     quit = true;
                     break;
+                case SDL_MOUSEBUTTONDOWN:
+                    if(event.button.button == SDL_BUTTON_MIDDLE){
+                        mClick = true;
+                        SDL_GetMouseState( mousePosition, mousePosition + 1 );
+                        mousePosition[2] = mousePosition[0];
+                        mousePosition[3] = mousePosition[1];
+                    }
+
+                    break;
+
+                case SDL_MOUSEWHEEL:
+                    if(event.wheel.y > 0) // scroll up
+                    {
+                        if(camera.getx() <= 0){
+                            camera.setX(1);
+                        }
+                        else{
+                            camera.setX(camera.getx() - 1);
+                        }
+                    }
+                    else if(event.wheel.y < 0) // scroll down
+                    {
+                        if(camera.getx() <= 0){
+                            camera.setX(1);
+                        }
+                        else{
+                            camera.setX(camera.getx() + 1);
+                        }
+                    }
+                case SDL_MOUSEBUTTONUP:
+                    mClick = false;
+                    break;
+
                 case SDL_KEYDOWN:
                     // Handle key pressed with current mouse position
                     SDL_GetMouseState( &x, &y );
@@ -383,16 +490,26 @@ int main(int argc, char* args[])
                         quit = true;
                         break;
                     case SDLK_z:
-                        hCam += 0.5;
+                        camera.setPos(camera.getx(),camera.gety() + 1,camera.getz());
                         break;
                     case SDLK_s:
-                        hCam -= 0.5;
+                        camera.setPos(camera.getx(),camera.gety() - 1,camera.getz());
                         break;
-                    case SDLK_o:
-                        rho += 5;
+                    case SDLK_RIGHT:
+                        camera.setPos(camera.getx(),camera.gety(),camera.getz() - 1);
+                        camera.lookAt(camera.getlookx(),camera.getlooky(),camera.getlookz() - 1);
                         break;
-                    case SDLK_p:
-                        rho -= 5;
+                    case SDLK_LEFT:
+                        camera.setPos(camera.getx(),camera.gety(),camera.getz() + 1);
+                        camera.lookAt(camera.getlookx(),camera.getlooky(),camera.getlookz() + 1);
+                        break;
+                    case SDLK_UP:
+                        camera.setPos(camera.getx(),camera.gety() + 1,camera.getz());
+                        camera.lookAt(camera.getlookx(),camera.getlooky() + 1,camera.getlookz());
+                        break;
+                    case SDLK_DOWN:
+                        camera.setPos(camera.getx(),camera.gety() - 1,camera.getz());
+                        camera.lookAt(camera.getlookx(),camera.getlooky() - 1,camera.getlookz());
                         break;
                     default:
                         break;
@@ -411,7 +528,7 @@ int main(int argc, char* args[])
             if (elapsed_time_anim > ANIM_DELAY)
             {
                 previous_time_anim = current_time;
-                update(forms_list, 1e-3 * elapsed_time_anim); // International system units : seconds
+                update(forms_list, 1e-3 * elapsed_time_anim, &engine); // International system units : seconds
             }
 
             // Render the scene
@@ -420,7 +537,7 @@ int main(int argc, char* args[])
             if (elapsed_time_render > FRAME_DELAY)
             {
                 previous_time_render = current_time;
-                render(forms_list, camera_position, rho);
+                render(forms_list, camera, rho);
 
                 // Update window screen
                 SDL_GL_SwapWindow(gWindow);
