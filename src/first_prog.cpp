@@ -426,6 +426,20 @@ int main(int argc, char* args[])
 
         engine.addForm(pFace3);
 
+        Plan *pFace4 = NULL;
+        pFace4 = new Plan(Vector(1,0,0), Vector(0,1,0), Point(1, 0, 1), 1, 1, WHITE); // For the animation
+        forms_list[number_of_forms] = pFace4;
+        number_of_forms++;
+
+        engine.addForm(pFace4);
+
+        Plan *pFace5 = NULL;
+        pFace5 = new Plan(Vector(1,0,0), Vector(0,1,0), Point(-1, 0, 0), 1, 1, WHITE); // For the animation
+        forms_list[number_of_forms] = pFace5;
+        number_of_forms++;
+
+        engine.addForm(pFace5);
+
         // Spheres
 
         Sphere* pSphere = NULL;
@@ -545,7 +559,7 @@ int main(int argc, char* args[])
                         camera.lookAt(camera.getlookx(),camera.getlooky() - 1,camera.getlookz());
                         break;
                     case SDLK_m:
-                        pSphere->getAnim().setSpeed(Vector(5,5,0));
+                        pSphere->getAnim().setSpeed(Vector(5,5,5));
                         break;
                     default:
                         break;
