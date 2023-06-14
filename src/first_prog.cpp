@@ -340,7 +340,7 @@ int main(int argc, char* args[])
         GLuint textureid_1, textureid_2;
         createTextureFromImage("resources/images/earth_texture.jpg", &textureid_1);
         createTextureFromImage("resources/images/tiles.bmp", &textureid_2);
-        
+
         GLuint textureid_sol;
         createTextureFromImage("resources/images/earth_texture.jpg", &textureid_sol);
         // Textures ready to be enabled (with private member " texture_id" of each form)
@@ -354,18 +354,12 @@ int main(int argc, char* args[])
             forms_list[i] = NULL;
         }
 
-        Table* table_list[MAX_FORMS_NUMBER];
-        unsigned short number_of_table = 0, j;
-        for (j=0; i<MAX_FORMS_NUMBER; j++)
-        {
-            table_list[j] = NULL;
-        }
         // Create here specific forms and add them to the list...
         // Don't forget to update the actual number_of_forms !
 
         Table *pTable = NULL;
         pTable = new Table(2.24, 1.12, 0.1, forms_list, number_of_forms, GREEN, ORANGE);
-        //pTable = new Table(3, 2, 0.5, forms_list, number_of_forms, GREEN, ORANGE); 
+        //pTable = new Table(3, 2, 0.5, forms_list, number_of_forms, GREEN, ORANGE);
 
         // Plan *pFace = NULL;
         // pFace = new Plan(Vector(1,0,0), Vector(0,1,0), Point(0.5, 0, 0.5), 1, 1, WHITE); // For the animation
