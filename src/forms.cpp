@@ -47,7 +47,7 @@ void Sphere::update(double delta_t)
     Vector OM(Point(0,0,0),ptM);
     Vector vit;
     Vector g(0,-9.81,0);
-    vit = this->anim.getSpeed() + 0.01*delta_t*g+Vector(0, -0.280, 0);
+    vit = this->anim.getSpeed() + 1*delta_t*g;
     this->anim.setSpeed(vit);
     OM = OM + delta_t*this->anim.getSpeed();
     ptM=Point(OM.x,OM.y,OM.z);
@@ -230,7 +230,7 @@ int inPlan (Plan* P, Sphere* S)
 
 void CollisionEngine::collision(Sphere* sphere, Plan* plan)
 {
-    std::cout << "sphere plan" << std::endl;
+    //std::cout << "sphere plan" << std::endl;
     float atenuation = 0.7;
     float atenuation2 = 1;
     Vector Nplan = plan->getDir1()^plan->getDir2();

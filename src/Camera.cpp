@@ -2,8 +2,8 @@
 
 Camera::Camera()
 {
-    setPos(5,0,0);
-    setrot(90,0);
+    setPos(30,0,0);
+    setrot(90,-60);
     lookAt(0,0,0);
 }
 //camera.getlookx(),camera.getlooky(),camera.getlookz()

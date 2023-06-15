@@ -35,7 +35,7 @@ const Uint32 ANIM_DELAY = 5;
 
 // Render actualization delay 40 (in ms) => 25 updates per second
 // 1000 / x = y => FRAME_DELAY = y for a framerate of x
-const Uint32 FRAME_DELAY = 15;
+const Uint32 FRAME_DELAY = 10;
 
 
 // Starts up SDL, creates window, and initializes OpenGL
@@ -309,7 +309,6 @@ int main(int argc, char* args[])
     int cptCol = 0;
     int mousePosition[4] = {0,0,0,0}; // position 0 and 1 are the current tick mouse position while 2 and 3 are previous tick position
     Camera camera;
-    camera.setX(10);
     bool mClick = false;
 
     // The window we'll be rendering to
@@ -375,21 +374,8 @@ int main(int argc, char* args[])
 
         Table *pTable = NULL;
         pTable = new Table(2.24*10, 1.12*10, 0.1*10, forms_list, number_of_forms, GREEN, ORANGE, engine);
-        //pTable = new Table(3, 2, 0.5, forms_list, number_of_forms, GREEN, ORANGE);
 
 /*
-        // Plan *pFace = NULL;
-        // pFace = new Plan(Vector(1,0,0), Vector(0,1,0), Point(0.5, 0, 0.5), 1, 1, WHITE); // For the animation
-        // pFace->setTexture(textureid_1);
-        // forms_list[number_of_forms] = pFace;
-        // number_of_forms++;
-
-        // pFace = new Plan(Vector(1,0,0), Vector(0,0,1), Point(-0.5, -0.5, -0.5), 1, 1, BLUE);
-        // forms_list[number_of_forms] = pFace;
-        // number_of_forms++;
-
-        // engine.addForm(*pFace);
-
         // Spheres
         Sphere* pSphere = NULL;
         Animation sphAnim;
@@ -415,42 +401,7 @@ int main(int argc, char* args[])
         forms_list[number_of_forms] = pSphere;
         number_of_forms++;
 */
-/*
-        Plan *pFace = NULL;
-        pFace = new Plan(Vector(1,0,0), Vector(0,0,1), Point(0, 0, 0), 1, 1, WHITE); // For the animation
-        forms_list[number_of_forms] = pFace;
-        number_of_forms++;
 
-        engine.addForm(pFace);
-
-        Plan *pFace2 = NULL;
-        pFace2 = new Plan(Vector(0,0,1), Vector(0,1,0), Point(1, 0, 0), 1, 1, WHITE); // For the animation
-        forms_list[number_of_forms] = pFace2;
-        number_of_forms++;
-
-        engine.addForm(pFace2);
-
-        Plan *pFace3 = NULL;
-        pFace3 = new Plan(Vector(0,0,1), Vector(0,1,0), Point(-1, 0, 0), 1, 1, WHITE); // For the animation
-        forms_list[number_of_forms] = pFace3;
-        number_of_forms++;
-
-        engine.addForm(pFace3);
-
-        Plan *pFace4 = NULL;
-        pFace4 = new Plan(Vector(1,0,0), Vector(0,1,0), Point(1, 0, 1), 1, 1, WHITE); // For the animation
-        forms_list[number_of_forms] = pFace4;
-        number_of_forms++;
-
-        engine.addForm(pFace4);
-
-        Plan *pFace5 = NULL;
-        pFace5 = new Plan(Vector(1,0,0), Vector(0,1,0), Point(-1, 0, 0), 1, 1, WHITE); // For the animation
-        forms_list[number_of_forms] = pFace5;
-        number_of_forms++;
-
-        engine.addForm(pFace5);
-*/
         // Spheres
 
         Sphere* pSphere = NULL;
@@ -460,7 +411,7 @@ int main(int argc, char* args[])
         sphAnim.setPos(Point(0,pSphere->getRadius() + 2,0));
         //sphAnim.setPhi(0.1); // angle en degre
         //sphAnim.setTheta(0.2); // angle en degre
-        sphAnim.setSpeed(Vector(0,0,0)); // v initiale colineaire a Ox
+        sphAnim.setSpeed(Vector(15,0,0)); // v initiale colineaire a Ox
         pSphere->setAnim(sphAnim);
         pSphere->setTexture(textureid_1);
         pSphere->getAnim().setPhi(1);
@@ -471,10 +422,10 @@ int main(int argc, char* args[])
 
         unsigned short k = 0;
         srand(time(NULL));
-        for (k = 0; k < 0; k++) { // nombre de boules crées aléatoireement pour tester
+        for (k = 0; k < 30; k++) { // nombre de boules crées aléatoireement pour tester
             pSphere = new Sphere(0.2, RED);
             Animation sphAnimk;
-            sphAnimk.setPos(Point(randf(5),randf(5),randf(5)));
+            sphAnimk.setPos(Point(randf(5),randf(5)+7,randf(5)));
             sphAnimk.setSpeed(Vector(sphAnimk.getPos(), Point(0,0,0))); // v initiale dans plan x0y
             pSphere->setAnim(sphAnimk);
             pSphere->setTexture(textureid_2);
@@ -489,12 +440,6 @@ int main(int argc, char* args[])
         // While application is running
         while(!quit)
         {
-            /*cptCol++;
-            if (cptCol >= 21000)
-            {
-                engine.collision(*pSphere, *pFace);
-                cptCol = 0;
-            }*/
 
             if(mClick){
                 //update mouse posiion
@@ -585,7 +530,7 @@ int main(int argc, char* args[])
                         camera.lookAt(camera.getlookx(),camera.getlooky() - 1,camera.getlookz());
                         break;
                     case SDLK_m:
-                        pSphere->getAnim().setSpeed(Vector(-5,5,0));
+                        pSphere->getAnim().setSpeed(Vector(-15,0,0));
                         break;
                     default:
                         break;
