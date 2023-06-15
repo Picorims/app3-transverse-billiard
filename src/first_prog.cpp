@@ -380,11 +380,11 @@ int main(int argc, char* args[])
         // Spheres
         Sphere* pSphere = NULL;
         Animation sphAnim;
-        pSphere = new Sphere(0.4, WHITE);
+        pSphere = new Sphere(0.2, WHITE);
         sphAnim.setPos(Point(0,0,0));
-        sphAnim.setPhi(0.1); // angle en degre
-        sphAnim.setTheta(0.2); // angle en degre
-        sphAnim.setSpeed(Vector(0,0.2,-0.1)); // v initiale colineaire a Ox
+        sphAnim.setPhi(0); // angle en degre
+        sphAnim.setTheta(0); // angle en degre
+        sphAnim.setSpeed(Vector(0,0.6,0)); // v initiale colineaire a Ox
         pSphere->setAnim(sphAnim);
         pSphere->setTexture(textureid_1);
         pSphere->getAnim().setPhi(10);
@@ -393,10 +393,10 @@ int main(int argc, char* args[])
 
         engine.addForm(pSphere);
 
-        pSphere = new Sphere(0.3, RED);
+        pSphere = new Sphere(0.2, RED);
         Animation sphAnim2;
-        sphAnim2.setPos(Point(0,1,0));
-        sphAnim2.setSpeed(Vector(0,0,-0.2)); // v initiale dans plan x0y
+        sphAnim2.setPos(Point(0,1.5,0.38));
+        sphAnim2.setSpeed(Vector(-0.05,-0.05,-0.15)); // v initiale dans plan x0y
         pSphere->setAnim(sphAnim2);
         pSphere->setTexture(textureid_2);
         forms_list[number_of_forms] = pSphere;

@@ -47,9 +47,9 @@ void Sphere::update(double delta_t)
     Point ptM=this->anim.getPos();
     Vector OM(Point(0,0,0),ptM);
     Vector vit;
-    Vector g(0,-9.81,0);
-    vit = this->anim.getSpeed() + 0.01*delta_t*g;
-    this->anim.setSpeed(vit);
+    //Vector g(0,-9.81,0);
+    //vit = this->anim.getSpeed() + 0.1*delta_t*g;
+    //this->anim.setSpeed(vit);
     OM = OM + delta_t*this->anim.getSpeed();
     ptM=Point(OM.x,OM.y,OM.z);
     this->anim.setPos(ptM);
