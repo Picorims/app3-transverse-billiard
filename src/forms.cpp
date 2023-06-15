@@ -2,7 +2,6 @@
 #include <SDL2/SDL_opengl.h>
 #include <GL/GLU.h>
 #include "forms.h"
-#include "physics.h"
 
 
 void Form::update(double delta_t)
@@ -158,38 +157,93 @@ void Plan::render()
 
 }
 
-Table::Table(double length, double width, double height, Form** forms_list, unsigned short& number_of_forms, Color colSol, Color colMur) {    
+Table::Table(double length, double width, double height, Form** forms_list, unsigned short& number_of_forms, Color colSol, Color colMur) {
     // Création des 5 plans de la table
-    // Plan du Sol : 
+    // Plan du Sol :
     Plan *pSol = NULL;
     pSol = new Plan(Vector(1, 0, 0), Vector(0, 0, 1), Point(-length/2, 0, -width/2), length, width, colSol);
     forms_list[number_of_forms] = pSol;
-    number_of_forms++; 
+    number_of_forms++;
 
-    // Plan du Mur1 : 
+    // Plan du Mur1 :
     Plan *pMur1 = NULL;
     pMur1 = new Plan(Vector(1, 0, 0), Vector(0, 1, 0), Point(-length/2, 0, -width/2), length, height, colMur);
     forms_list[number_of_forms] = pMur1;
     number_of_forms++;
 
-    // Plan du Mur2 : 
+    // Plan du Mur2 :
     Plan *pMur2 = NULL;
     pMur2 = new Plan(Vector(0, 0, 1), Vector(0, 1, 0), Point(-length/2, 0, -width/2), width, height, colMur);
     forms_list[number_of_forms] = pMur2;
     number_of_forms++;
 
-    // Plan du Mur3 : 
+    // Plan du Mur3 :
     Plan *pMur3 = NULL;
     pMur3 = new Plan(Vector(1, 0, 0), Vector(0, 1, 0), Point(-length/2, 0, width/2), length, height, colMur);
     forms_list[number_of_forms] = pMur3;
     number_of_forms++;
 
-    // Plan du Mur4 : 
+    // Plan du Mur4 :
     Plan *pMur4 = NULL;
     pMur4 = new Plan(Vector(0, 0, 1), Vector(0, 1, 0), Point(length/2, 0, -width/2), width, height, colMur);
     forms_list[number_of_forms] = pMur4;
     number_of_forms++;
+}
 
+
+
+
+
+
+
+
+
+
+
+
+// COLLISION ENGINE =======================
+
+void CollisionEngine::collision(Sphere &sphere, Plan &plan)
+{
+    std::cout << "sphere plan" << std::endl;
+}
+
+void CollisionEngine::collision(Sphere &sphere1, Sphere &sphere2)
+{
+    std::cout << "sphere sphere" << std::endl;
+}
+
+void CollisionEngine::addForm(Sphere &form)
+{
+    std::cout << "added sphere" << std::endl;
+    sphere_list.push_back(form);
+}
+
+void CollisionEngine::addForm(Plan &form)
+{
+    std::cout << "added plan" << std::endl;
+    plan_list.push_back(form);
+}
+
+void CollisionEngine::collide()
+{
+    unsigned short total_size = sphere_list.size() + plan_list.size();
+    for (unsigned short i = 0; i < total_size; i++)
+    {
+        for (unsigned short j = i+1; j < total_size; j++)
+        {
+            if (i < sphere_list.size() && j < sphere_list.size()) {
+                // sphere - sphere
+                collision(sphere_list.at(i), sphere_list.at(j));
+
+            } else if (i < sphere_list.size() && j >= sphere_list.size()) {
+                // sphere - plan
+                collision(sphere_list.at(i), plan_list.at(j-sphere_list.size()));
+
+            } else if (i >= sphere_list.size() && j >= sphere_list.size()) {
+                // plan - plan
+                // do nothing
+            }
+        }
     }
-   
-    
+}
