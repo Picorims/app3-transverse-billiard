@@ -104,6 +104,10 @@ Vector operator*(const double &k, const Vector &v)
 
     return res;
 }
+Vector operator*(const Vector &v, const double &k)
+{
+    return k * v;
+}
 
 // Scalar product
 double operator*(const Vector &v1, const Vector &v2)

@@ -49,6 +49,7 @@ Vector operator+(const Vector &v1, const Vector &v2);
 Vector operator-(const Vector &v);
 Vector operator-(const Vector &v1, const Vector &v2);
 Vector operator*(const double &k, const Vector &v);
+Vector operator*(const Vector &v, const double &k);
 // Scalar product
 double operator*(const Vector &v1, const Vector &v2);
 // Vector product
