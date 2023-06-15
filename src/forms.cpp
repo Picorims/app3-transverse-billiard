@@ -48,7 +48,7 @@ void Sphere::update(double delta_t)
     Vector OM(Point(0,0,0),ptM);
     Vector vit;
     Vector g(0,-9.81,0);
-    vit = this->anim.getSpeed() + 0.01*delta_t*g;
+    //vit = this->anim.getSpeed() + 0.01*delta_t*g;
     this->anim.setSpeed(vit);
     OM = OM + delta_t*this->anim.getSpeed();
     ptM=Point(OM.x,OM.y,OM.z);
@@ -98,6 +98,40 @@ void Sphere::render()
     // Ne plus appliquer la texture pour la suite
     glDisable(GL_TEXTURE_2D);
 }
+
+Canne::Canne(Sphere* org ,Color cl){
+    col = cl;
+    pSphere = org;
+    origin = org->getAnim().getPos();
+    dt = 0;
+}
+void Canne::update(double delta_t)
+{
+    //Point test(0,0,0);
+    //origin = test;
+    origin = pSphere->getAnim().getPos();
+    //pSphere->getAnim().setSpeed()
+
+}
+
+void Canne::render()
+{
+
+    glBegin(GL_LINES);
+    {
+
+        glColor3f(0.0f, 1.0f, 1.0f);
+        glVertex3f(origin.x, origin.y, origin.z);
+        glVertex3f(origin.x + 1, origin.y, origin.z);
+        glRotated(dt, 1, 1, 1);
+        //glRotated(dt, 0, 1, 0);
+        //glRotated(dt, 1, 0, 0);
+        //dt++;
+    }
+    glEnd();
+
+}
+
 
 
 Plan::Plan(Vector v1, Vector v2, Point org, double l, double w, Color cl)
@@ -158,38 +192,38 @@ void Plan::render()
 
 }
 
-Table::Table(double length, double width, double height, Form** forms_list, unsigned short& number_of_forms, Color colSol, Color colMur) {    
+Table::Table(double length, double width, double height, Form** forms_list, unsigned short& number_of_forms, Color colSol, Color colMur) {
     // Création des 5 plans de la table
-    // Plan du Sol : 
+    // Plan du Sol :
     Plan *pSol = NULL;
     pSol = new Plan(Vector(1, 0, 0), Vector(0, 0, 1), Point(-length/2, 0, -width/2), length, width, colSol);
     forms_list[number_of_forms] = pSol;
-    number_of_forms++; 
+    number_of_forms++;
 
-    // Plan du Mur1 : 
+    // Plan du Mur1 :
     Plan *pMur1 = NULL;
     pMur1 = new Plan(Vector(1, 0, 0), Vector(0, 1, 0), Point(-length/2, 0, -width/2), length, height, colMur);
     forms_list[number_of_forms] = pMur1;
     number_of_forms++;
 
-    // Plan du Mur2 : 
+    // Plan du Mur2 :
     Plan *pMur2 = NULL;
     pMur2 = new Plan(Vector(0, 0, 1), Vector(0, 1, 0), Point(-length/2, 0, -width/2), width, height, colMur);
     forms_list[number_of_forms] = pMur2;
     number_of_forms++;
 
-    // Plan du Mur3 : 
+    // Plan du Mur3 :
     Plan *pMur3 = NULL;
     pMur3 = new Plan(Vector(1, 0, 0), Vector(0, 1, 0), Point(-length/2, 0, width/2), length, height, colMur);
     forms_list[number_of_forms] = pMur3;
     number_of_forms++;
 
-    // Plan du Mur4 : 
+    // Plan du Mur4 :
     Plan *pMur4 = NULL;
     pMur4 = new Plan(Vector(0, 0, 1), Vector(0, 1, 0), Point(length/2, 0, -width/2), width, height, colMur);
     forms_list[number_of_forms] = pMur4;
     number_of_forms++;
 
     }
-   
-    
+
+

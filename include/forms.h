@@ -89,15 +89,29 @@ public:
     void render();
 };
 
+class Canne : public Form
+{
+private:
+    Vector vdir1;
+    Point origin;
+    Sphere* pSphere;
+    double dt;
+public:
+    Canne(Sphere* org = NULL,
+          Color cl = Color());
+    void update(double delta_t);
+    void render();
+};
+
 
 class Table {
 private:
     double length, width, height; // dimensions
-public:    
+public:
     std::vector<Plan> plans;
 
     Table(double length, double width, double height,
-             Form** forms_list, unsigned short& number_of_forms, 
+             Form** forms_list, unsigned short& number_of_forms,
              Color, Color);
 };
 

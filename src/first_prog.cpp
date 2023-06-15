@@ -231,6 +231,7 @@ void render(Form* formlist[MAX_FORMS_NUMBER],  Camera camera, double angle)
     glEnd();
     glPopMatrix(); // Restore the camera viewing point for next object
 
+
     // Render the list of forms
     unsigned short i = 0;
     while(formlist[i] != NULL)
@@ -377,19 +378,24 @@ int main(int argc, char* args[])
         Sphere* pSphere = NULL;
         Animation sphAnim;
         pSphere = new Sphere(0.4, WHITE);
-        sphAnim.setPos(Point(1.5,0,0));
-        sphAnim.setPhi(0.1); // angle en degre
-        sphAnim.setTheta(0.2); // angle en degre
-        sphAnim.setSpeed(Vector(-0.1,0,0)); // v initiale colineaire a Ox
+        sphAnim.setPos(Point(1.5,1,0));
+        //sphAnim.setPhi(0.1); // angle en degre
+        //sphAnim.setTheta(0.2); // angle en degre
+        //sphAnim.setSpeed(Vector(-0.1,0,0)); // v initiale colineaire a Ox
         pSphere->setAnim(sphAnim);
         pSphere->setTexture(textureid_1);
-        pSphere->getAnim().setPhi(10);
+        //pSphere->getAnim().setPhi(10);
         forms_list[number_of_forms] = pSphere;
         number_of_forms++;
 
         engine.addForm(*pSphere);
 
-        pSphere = new Sphere(0.3, RED);
+        Canne* pCanne = NULL;
+        pCanne = new Canne(pSphere,GREEN);
+        forms_list[number_of_forms] = pCanne;
+        number_of_forms++;
+
+        /*pSphere = new Sphere(0.3, RED);
         Animation sphAnim2;
         sphAnim2.setPos(Point(1,1,0));
         sphAnim2.setSpeed(Vector(-0.2,-0.2,0)); // v initiale dans plan x0y
@@ -398,7 +404,7 @@ int main(int argc, char* args[])
         forms_list[number_of_forms] = pSphere;
         number_of_forms++;
 
-        engine.addForm(*pSphere);
+        engine.addForm(*pSphere);*/
 
         // Get first "current time"
         previous_time_anim = previous_time_render = SDL_GetTicks();
