@@ -18,8 +18,12 @@ void Form::render()
     Point org = anim.getPos();
     glTranslated(org.x, org.y, org.z);
 
-    glRotated(anim.getTheta(), 1,0,0);
+    int x_theta=1;
+    int y_theta=0;
+    int z_theta=0;
+    glRotated(anim.getTheta(), x_theta,y_theta,z_theta);
     glRotated(anim.getPhi(), 0,1,0);
+    glRotated(anim.getRho(), 0,0,1);
 
     glColor3f(col.r, col.g, col.b);
 }
@@ -57,23 +61,50 @@ void Sphere::update(double delta_t)
     // Exemple d'animation non liee a de la physique
     // Pourquoi la sphere rouge ne tourne t elle pas sur elle meme
     // comme le fait la sphere Terre ?
-    double angle=this->anim.getPhi();
-    if(angle>0){
-        angle=angle+delta_t*10;
-    }
-    while(angle>360){
-            angle=angle-360;
-    }
-    this->anim.setPhi(angle);
+    
+    double r = this->radius;
 
-    angle=this->anim.getTheta();
-    if(angle>0){
-        angle=angle+delta_t*100;
+    double sensz = this->anim.getSpeed().z;
+    double anglez = 1;
+    double sensx = this->anim.getSpeed().x;
+    double anglex = 1;
+
+
+    //rotation sur x
+    if(sensx>0){
+        anglex=(anglex+delta_t*100*sensx)/(2*std::acos(-1)*r);
     }
-    while(angle>360){
-            angle=angle-360;
+    if(sensx<0){
+        anglex=(anglex+delta_t*-100*sensx)/(2*std::acos(-1)*r);
     }
-    this->anim.setTheta(angle);
+    while(anglex>360){
+            anglex=anglex-360;
+    }
+    if(sensx>0){
+        this->anim.setRho(this->anim.getRho() - anglex);
+    }
+    if(sensx<0){
+        this->anim.setRho(this->anim.getRho() + anglex);
+    }
+
+    //rotation sur z
+    if(sensz>0){
+        anglez=(anglez+delta_t*100*sensz)/(2*std::acos(-1)*r);
+    }
+    if(sensz<0){
+        anglez=(anglez+delta_t*-100*sensz)/(2*std::acos(-1)*r);
+    }
+    while(anglez>360){
+            anglez=anglez-360;
+    }
+    if(sensz>0){
+        this->anim.setTheta(this->anim.getTheta() + anglez);
+    }
+    if(sensz<0){
+        this->anim.setTheta(this->anim.getTheta() - anglez);
+    }
+
+
 }
 
 

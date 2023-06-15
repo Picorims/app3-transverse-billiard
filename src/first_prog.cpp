@@ -22,7 +22,7 @@
 /* Constants and functions declarations                                    */
 /***************************************************************************/
 // Screen dimension constants
-const int SCREEN_WIDTH = 1024;
+const int SCREEN_WIDTH = 1400;
 const int SCREEN_HEIGHT = 768;
 //const int SCREEN_WIDTH = 640;
 //const int SCREEN_HEIGHT = 480;
@@ -354,18 +354,12 @@ int main(int argc, char* args[])
             forms_list[i] = NULL;
         }
 
-        Table* table_list[MAX_FORMS_NUMBER];
-        unsigned short number_of_table = 0, j;
-        for (j=0; i<MAX_FORMS_NUMBER; j++)
-        {
-            table_list[j] = NULL;
-        }
         // Create here specific forms and add them to the list...
         // Don't forget to update the actual number_of_forms !
 
         Table *pTable = NULL;
-        pTable = new Table(2.24, 1.12, 0.1, forms_list, number_of_forms, GREEN, ORANGE);
-        //pTable = new Table(3, 2, 0.5, forms_list, number_of_forms, GREEN, ORANGE); 
+        //pTable = new Table(2.24, 1.12, 0.1, forms_list, number_of_forms, GREEN, ORANGE);
+        pTable = new Table(3, 2, 0.1, forms_list, number_of_forms, GREEN, ORANGE); 
 
         // Plan *pFace = NULL;
         // pFace = new Plan(Vector(1,0,0), Vector(0,1,0), Point(0.5, 0, 0.5), 1, 1, WHITE); // For the animation
@@ -381,29 +375,41 @@ int main(int argc, char* args[])
 
         // Spheres
         Sphere* pSphere = NULL;
+
+        // Boule 1
+        pSphere = new Sphere(0.1, WHITE);
         Animation sphAnim;
-        pSphere = new Sphere(0.4, WHITE);
         sphAnim.setPos(Point(1.5,0,0));
-        sphAnim.setPhi(0.1); // angle en degre
-        sphAnim.setTheta(0.2); // angle en degre
-        sphAnim.setSpeed(Vector(-0.1,0,0)); // v initiale colineaire a Ox
+        sphAnim.setSpeed(Vector(-0.5,0.3,0)); // v initiale colineaire a Ox
+        
         pSphere->setAnim(sphAnim);
         pSphere->setTexture(textureid_1);
-        pSphere->getAnim().setPhi(10);
         forms_list[number_of_forms] = pSphere;
         number_of_forms++;
-
         engine.addForm(*pSphere);
 
-        pSphere = new Sphere(0.3, RED);
+        // Boule 2
+        pSphere = new Sphere(0.1, RED);
         Animation sphAnim2;
-        sphAnim2.setPos(Point(1,1,0));
-        sphAnim2.setSpeed(Vector(-0.2,-0.2,0)); // v initiale dans plan x0y
+        sphAnim2.setPos(Point(0,0,1.5));        
+        sphAnim2.setSpeed(Vector(0,0.3,+0.3)); // v initiale dans plan x0y
+        
         pSphere->setAnim(sphAnim2);
         pSphere->setTexture(textureid_2);
         forms_list[number_of_forms] = pSphere;
         number_of_forms++;
+        engine.addForm(*pSphere);
 
+        // Boule 3
+        pSphere = new Sphere(0.3, RED);
+        Animation sphAnim3;
+        sphAnim3.setPos(Point(1.5,0,-1.5));        
+        sphAnim3.setSpeed(Vector(0.1,0.0,0.1)); // v initiale dans plan x0y
+        
+        pSphere->setAnim(sphAnim3);
+        pSphere->setTexture(textureid_2);
+        forms_list[number_of_forms] = pSphere;
+        number_of_forms++;
         engine.addForm(*pSphere);
 
         // Get first "current time"
