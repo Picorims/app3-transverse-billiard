@@ -17,8 +17,8 @@ void Form::render()
     Point org = anim.getPos();
     glTranslated(org.x, org.y, org.z);
 
-    glRotated(anim.getTheta(), 1,0,0);
-    glRotated(anim.getPhi(), 0,1,0);
+    //glRotated(anim.getTheta(), 1,0,0);
+    //glRotated(anim.getPhi(), 0,1,0);
 
     glColor3f(col.r, col.g, col.b);
 }
@@ -46,9 +46,9 @@ void Sphere::update(double delta_t)
     Point ptM=this->anim.getPos();
     Vector OM(Point(0,0,0),ptM);
     Vector vit;
-    //Vector g(0,-9.81,0);
-    //vit = this->anim.getSpeed() + 0.1*delta_t*g;
-    //this->anim.setSpeed(vit);
+    Vector g(0,-9.81,0);
+    vit = this->anim.getSpeed() + 0.01*delta_t*g+Vector(0, -0.280, 0);
+    this->anim.setSpeed(vit);
     OM = OM + delta_t*this->anim.getSpeed();
     ptM=Point(OM.x,OM.y,OM.z);
     this->anim.setPos(ptM);
@@ -157,36 +157,41 @@ void Plan::render()
 
 }
 
-Table::Table(double length, double width, double height, Form** forms_list, unsigned short& number_of_forms, Color colSol, Color colMur) {
+Table::Table(double length, double width, double height, Form** forms_list, unsigned short& number_of_forms, Color colSol, Color colMur, CollisionEngine &engine) {
     // Création des 5 plans de la table
     // Plan du Sol :
     Plan *pSol = NULL;
     pSol = new Plan(Vector(1, 0, 0), Vector(0, 0, 1), Point(-length/2, 0, -width/2), length, width, colSol);
     forms_list[number_of_forms] = pSol;
+    engine.addForm(pSol);
     number_of_forms++;
 
     // Plan du Mur1 :
     Plan *pMur1 = NULL;
     pMur1 = new Plan(Vector(1, 0, 0), Vector(0, 1, 0), Point(-length/2, 0, -width/2), length, height, colMur);
     forms_list[number_of_forms] = pMur1;
+    engine.addForm(pMur1);
     number_of_forms++;
 
     // Plan du Mur2 :
     Plan *pMur2 = NULL;
     pMur2 = new Plan(Vector(0, 0, 1), Vector(0, 1, 0), Point(-length/2, 0, -width/2), width, height, colMur);
     forms_list[number_of_forms] = pMur2;
+    engine.addForm(pMur2);
     number_of_forms++;
 
     // Plan du Mur3 :
     Plan *pMur3 = NULL;
     pMur3 = new Plan(Vector(1, 0, 0), Vector(0, 1, 0), Point(-length/2, 0, width/2), length, height, colMur);
     forms_list[number_of_forms] = pMur3;
+    engine.addForm(pMur3);
     number_of_forms++;
 
     // Plan du Mur4 :
     Plan *pMur4 = NULL;
     pMur4 = new Plan(Vector(0, 0, 1), Vector(0, 1, 0), Point(length/2, 0, -width/2), width, height, colMur);
     forms_list[number_of_forms] = pMur4;
+    engine.addForm(pMur4);
     number_of_forms++;
 }
 
@@ -194,7 +199,27 @@ Table::Table(double length, double width, double height, Form** forms_list, unsi
 
 
 
+// TOOL COLLISION =========================
 
+int inPlan (Plan* P, Sphere* S)
+{
+    Vector N = P->getDir1()^P->getDir2();
+    if ((N.x != 0) || (N.z != 0))
+    {
+        if (S->getAnim().getPos().y-S->getRadius() > P->getAnim().getPos().y+P->getWidth())
+        {
+            return 0;
+        }
+    }
+    else if(N.y != 0)
+    {
+        if ((S->getAnim().getPos().x > P->getAnim().getPos().x+P->getLength()) || (S->getAnim().getPos().x < P->getAnim().getPos().x) || (S->getAnim().getPos().z > P->getAnim().getPos().z+P->getWidth()) || (S->getAnim().getPos().z < P->getAnim().getPos().z))
+        {
+            return 0;
+        }
+    }
+    return 1;
+}
 
 
 
@@ -205,8 +230,58 @@ Table::Table(double length, double width, double height, Form** forms_list, unsi
 
 void CollisionEngine::collision(Sphere* sphere, Plan* plan)
 {
-}
+    std::cout << "sphere plan" << std::endl;
+    float atenuation = 0.7;
+    float atenuation2 = 1;
+    Vector Nplan = plan->getDir1()^plan->getDir2();
+    Vector PlanSphere;
+    Vector Vout;
+    PlanSphere.x = plan->getAnim().getPos().x - sphere->getAnim().getPos().x;
+    PlanSphere.y = plan->getAnim().getPos().y - sphere->getAnim().getPos().y;
+    PlanSphere.z = plan->getAnim().getPos().z - sphere->getAnim().getPos().z;
+    Vout = Vector(sphere->getAnim().getSpeed().x, sphere->getAnim().getSpeed().y, sphere->getAnim().getSpeed().z);
 
+
+    Vector Vcol = (PlanSphere*Nplan)*Nplan;
+    float itBoxCecure = 0;
+    if (Vcol.norm() <= sphere->getRadius()+itBoxCecure)
+    {
+        if (inPlan(plan, sphere) == 1)
+        {
+            if (Nplan.y != 0)
+            {
+                Vout = Vector(Vout.x*atenuation, -Vout.y*atenuation, Vout.z*atenuation);
+                if(sphere->getAnim().getPos().y - sphere->getRadius() - itBoxCecure < plan->getAnim().getPos().y)
+                {
+                    sphere->getAnim().setPos(Point(sphere->getAnim().getPos().x, plan->getAnim().getPos().y + sphere->getRadius()+itBoxCecure, sphere->getAnim().getPos().z));
+                }
+
+            }
+            else if (Nplan.x != 0)
+            {
+
+                Vout = Vector(-Vout.x*atenuation, Vout.y*atenuation, Vout.z*atenuation);
+                if(Vcol.norm() <= sphere->getRadius())
+                {
+                    Vector Ni = (1/Vcol.norm())* Vcol;
+                    Ni = Ni * sphere->getRadius();
+                    sphere->getAnim().setPos(Point(sphere->getAnim().getPos().x - Ni.x, sphere->getAnim().getPos().y, sphere->getAnim().getPos().z));
+                }
+            }
+            else if (Nplan.z != 0)
+            {
+                Vout = Vector(Vout.x*atenuation, Vout.y*atenuation, -Vout.z*atenuation);
+                if(Vcol.norm() <= sphere->getRadius())
+                {
+                    Vector Ni = (1/Vcol.norm())* Vcol;
+                    Ni = Ni * sphere->getRadius();
+                    sphere->getAnim().setPos(Point(sphere->getAnim().getPos().x, sphere->getAnim().getPos().y, sphere->getAnim().getPos().z - Ni.z));
+                }
+            }
+            sphere->getAnim().setSpeed(Vout);
+        }
+    }
+}
 
 void CollisionEngine::collision(Sphere* sphere1, Sphere* sphere2)
 {
