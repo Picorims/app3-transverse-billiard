@@ -15,8 +15,6 @@
 #include "forms.h"
 //Module for Camera control
 #include "Camera.h"
-// Module for the physics engine
-#include "physics.h"
 
 /***************************************************************************/
 /* Constants and functions declarations                                    */
