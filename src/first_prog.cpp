@@ -15,8 +15,6 @@
 #include "forms.h"
 //Module for Camera control
 #include "Camera.h"
-// Module for the physics engine
-#include "physics.h"
 
 /***************************************************************************/
 /* Constants and functions declarations                                    */
@@ -400,7 +398,7 @@ int main(int argc, char* args[])
         forms_list[number_of_forms] = pSphere;
         number_of_forms++;
 */
-
+/*
         Plan *pFace = NULL;
         pFace = new Plan(Vector(1,0,0), Vector(0,0,1), Point(0, 0, 0), 1, 1, WHITE); // For the animation
         forms_list[number_of_forms] = pFace;
@@ -435,7 +433,7 @@ int main(int argc, char* args[])
         number_of_forms++;
 
         engine.addForm(pFace5);
-
+*/
         // Spheres
 
         Sphere* pSphere = NULL;
