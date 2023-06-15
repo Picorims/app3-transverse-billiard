@@ -88,6 +88,8 @@ public:
     void render();
     Vector getDir1(){return vdir1;}
     Vector getDir2(){return vdir2;}
+    double getLength(){return length;}
+    double getWidth(){return width;}
 };
 
 
@@ -118,7 +120,9 @@ public:
 
     Table(double length, double width, double height,
              Form** forms_list, unsigned short& number_of_forms,
-             Color, Color);
+             Color, Color, CollisionEngine &engine);
 };
+
+int inPlan (Plan* P, Sphere* S);
 
 #endif // FORMS_H_INCLUDED

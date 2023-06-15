@@ -29,11 +29,11 @@ const int SCREEN_HEIGHT = 768;
 const int MAX_FORMS_NUMBER = 10;
 
 // Animation actualization delay (in ms) => 100 updates per second
-const Uint32 ANIM_DELAY = 10;
+const Uint32 ANIM_DELAY = 5;
 
 // Render actualization delay 40 (in ms) => 25 updates per second
 // 1000 / x = y => FRAME_DELAY = y for a framerate of x
-const Uint32 FRAME_DELAY = 5;
+const Uint32 FRAME_DELAY = 15;
 
 
 // Starts up SDL, creates window, and initializes OpenGL
@@ -358,7 +358,7 @@ int main(int argc, char* args[])
         // Don't forget to update the actual number_of_forms !
 
         Table *pTable = NULL;
-        pTable = new Table(2.24, 1.12, 0.1, forms_list, number_of_forms, GREEN, ORANGE);
+        pTable = new Table(2.24*10, 1.12*10, 0.1*10, forms_list, number_of_forms, GREEN, ORANGE, engine);
         //pTable = new Table(3, 2, 0.5, forms_list, number_of_forms, GREEN, ORANGE);
 /*
         // Plan *pFace = NULL;
@@ -439,7 +439,8 @@ int main(int argc, char* args[])
         Sphere* pSphere = NULL;
         Animation sphAnim;
         pSphere = new Sphere(0.1, WHITE);
-        sphAnim.setPos(Point(0,pSphere->getRadius(),0.5));
+        pSphere->setRadius (0.3);
+        sphAnim.setPos(Point(0,pSphere->getRadius() + 2,0));
         //sphAnim.setPhi(0.1); // angle en degre
         //sphAnim.setTheta(0.2); // angle en degre
         sphAnim.setSpeed(Vector(0,0,0)); // v initiale colineaire a Ox
@@ -553,7 +554,7 @@ int main(int argc, char* args[])
                         camera.lookAt(camera.getlookx(),camera.getlooky() - 1,camera.getlookz());
                         break;
                     case SDLK_m:
-                        pSphere->getAnim().setSpeed(Vector(5,5,5));
+                        pSphere->getAnim().setSpeed(Vector(-5,5,0));
                         break;
                     default:
                         break;
