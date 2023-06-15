@@ -347,7 +347,7 @@ int main(int argc, char* args[])
         createTextureFromImage("resources/images/tiles.bmp", &textureid_2);
 
         GLuint textureid_sol;
-        createTextureFromImage("resources/images/earth_texture.jpg", &textureid_sol);
+        createTextureFromImage("resources/images/parquet_texture.jpg", &textureid_sol);
         // Textures ready to be enabled (with private member " texture_id" of each form)
 
 
@@ -373,9 +373,17 @@ int main(int argc, char* args[])
         engine.addForm(pFace);*/
 
 
-        Table *pTable = NULL;
-        pTable = new Table(2.24*10, 1.12*10, 0.1*10, forms_list, number_of_forms, GREEN, ORANGE, engine);
+        // Table *pTable = NULL;
+        // pTable = new Table(2.24*10, 1.12*10, 0.1*10, forms_list, number_of_forms, GREEN, ORANGE, engine);
         //pTable = new Table(3, 2, 0.5, forms_list, number_of_forms, GREEN, ORANGE);
+
+        // Sol (NE PAS ENLEVER)
+        Plan *pSol = NULL;
+        pSol = new Plan(Vector(1,0,0), Vector(0,0,1), Point(-50, -3, -50), 100, 100, YELLOW); // For the animation
+        pSol->setTexture(textureid_sol);
+        forms_list[number_of_forms] = pSol;
+        engine.addForm(pSol);
+        number_of_forms++;
 
 /*
         // Plan *pFace = NULL;
