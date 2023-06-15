@@ -205,13 +205,11 @@ Table::Table(double length, double width, double height, Form** forms_list, unsi
 
 void CollisionEngine::collision(Sphere* sphere, Plan* plan)
 {
-    std::cout << "sphere plan" << std::endl;
 }
 
 
 void CollisionEngine::collision(Sphere* sphere1, Sphere* sphere2)
 {
-    std::cout << "sphere sphere" << std::endl;
     // sphere1 with center A, sphere2 with center B
     // v1 = speed of sphere1
     // v1AB = v1 aligned on AB
@@ -220,9 +218,7 @@ void CollisionEngine::collision(Sphere* sphere1, Sphere* sphere2)
     double r1 = sphere1->getRadius();
     double r2 = sphere2->getRadius();
 
-    std::cout << ab.norm() << " " << r1+r2 << std::endl;
-    if (ab.norm() <= (r1 + r2)) {
-        std::cout << "collision !!!!!!!!!!!!!!!!!!!!!" << std::endl;
+    if (ab.norm() <= (r1 + r2)) { // colliding ?
         Vector v1 = sphere1->getAnim().getSpeed();
         Vector v2 = sphere2->getAnim().getSpeed();
 
@@ -265,6 +261,14 @@ void CollisionEngine::collision(Sphere* sphere1, Sphere* sphere2)
         // apply new vectors
         sphere1->getAnim().setSpeed(Vector(v1Prim + oldV2));
         sphere2->getAnim().setSpeed(Vector(v2Prim + oldV2));
+
+        // only one collision possible, repositioning so that spheres
+        // don't clip anymore.
+        double clipping = ab.norm() - (r1+r2);
+        Vector newPos1 = Vector(Point(0,0,0), sphere1->getAnim().getPos()) + abUnit * (clipping/2.0);
+        Vector newPos2 = Vector(Point(0,0,0), sphere2->getAnim().getPos()) - abUnit * (clipping/2.0);
+        sphere1->getAnim().setPos(Point(newPos1.x, newPos1.y, newPos1.z));
+        sphere2->getAnim().setPos(Point(newPos2.x, newPos2.y, newPos2.z));
     }
 }
 
