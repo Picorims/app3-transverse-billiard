@@ -8,6 +8,8 @@
 #include <SDL2/SDL_image.h>
 #include <SDL2/SDL_opengl.h>
 #include <GL/GLU.h>
+#include <random>
+#include <ctime>
 
 // Module for space geometry
 #include "geometry.h"
@@ -26,7 +28,7 @@ const int SCREEN_HEIGHT = 768;
 //const int SCREEN_HEIGHT = 480;
 
 // Max number of forms : static allocation
-const int MAX_FORMS_NUMBER = 10;
+const int MAX_FORMS_NUMBER = 200;
 
 // Animation actualization delay (in ms) => 100 updates per second
 const Uint32 ANIM_DELAY = 10;
@@ -56,6 +58,10 @@ void close(SDL_Window** window);
 // returns 0 if all went fine, a negative value otherwise
 int createTextureFromImage (const char* filename, GLuint* textureID);
 
+float randf(float max_n) {
+    // random between -max_n and max_n
+    return (rand() / static_cast<float>(RAND_MAX) * 2*max_n) - max_n;
+}
 
 /***************************************************************************/
 /* Functions implementations                                               */
@@ -182,7 +188,6 @@ bool initGL()
 
 void update(Form* formlist[MAX_FORMS_NUMBER], double delta_t, CollisionEngine* engine)
 {
-    std::cout << "UPDATE ! ===============" << std::endl;
     engine->collide();
 
     // Update the list of forms
@@ -205,7 +210,7 @@ void render(Form* formlist[MAX_FORMS_NUMBER],  Camera camera, double angle)
 
     //this section will take the variables from the camera class to place it into the scene
     // Set the camera position and parameters
-    std::cout << "x " <<camera.getlookx() << " y " << camera.getlooky()<< " z " << camera.getlookz() << std::endl;
+    //std::cout << "x " <<camera.getlookx() << " y " << camera.getlooky()<< " z " << camera.getlookz() << std::endl;
     gluLookAt(camera.getx(),camera.gety(),camera.getz(), camera.getlookx(),camera.getlooky(),camera.getlookz(), 0.0,1.0,0.0);
     // Isometric view
     glRotated(camera.getVert(), 0, 0, 1);
@@ -303,6 +308,7 @@ int main(int argc, char* args[])
 {
     int mousePosition[4] = {0,0,0,0}; // position 0 and 1 are the current tick mouse position while 2 and 3 are previous tick position
     Camera camera;
+    camera.setX(10);
     bool mClick = false;
 
     // The window we'll be rendering to
@@ -389,7 +395,7 @@ int main(int argc, char* args[])
         sphAnim.setPos(Point(0,0,0));
         sphAnim.setPhi(0); // angle en degre
         sphAnim.setTheta(0); // angle en degre
-        sphAnim.setSpeed(Vector(0,0.6,0)); // v initiale colineaire a Ox
+        //sphAnim.setSpeed(Vector(0,0.6,0)); // v initiale colineaire a Ox
         pSphere->setAnim(sphAnim);
         pSphere->setTexture(textureid_1);
         pSphere->getAnim().setPhi(10);
@@ -400,14 +406,29 @@ int main(int argc, char* args[])
 
         pSphere = new Sphere(0.2, RED);
         Animation sphAnim2;
-        sphAnim2.setPos(Point(0,1.5,0.38));
-        sphAnim2.setSpeed(Vector(-0.05,-0.05,-0.15)); // v initiale dans plan x0y
+        sphAnim2.setPos(Point(0,0.1,0.1));
+        //sphAnim2.setSpeed(Vector(-0.05,-0.05,-0.15)); // v initiale dans plan x0y
         pSphere->setAnim(sphAnim2);
         pSphere->setTexture(textureid_2);
         forms_list[number_of_forms] = pSphere;
         number_of_forms++;
 
         engine.addForm(pSphere);
+
+        unsigned short k = 0;
+        srand(time(NULL));
+        for (k = 0; k < 0; k++) { // nombre de boules crées aléatoireement pour tester
+            pSphere = new Sphere(0.2, RED);
+            Animation sphAnimk;
+            sphAnimk.setPos(Point(randf(5),randf(5),randf(5)));
+            sphAnimk.setSpeed(Vector(sphAnimk.getPos(), Point(0,0,0))); // v initiale dans plan x0y
+            pSphere->setAnim(sphAnimk);
+            pSphere->setTexture(textureid_2);
+            forms_list[number_of_forms] = pSphere;
+            number_of_forms++;
+
+            engine.addForm(pSphere);
+        }
 
         // Get first "current time"
         previous_time_anim = previous_time_render = SDL_GetTicks();
