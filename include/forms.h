@@ -16,7 +16,6 @@ protected:
     bool isStatic = false;
 };
 
-
 class Color
 {
 public:
@@ -90,12 +89,33 @@ public:
 };
 
 
+
+// singleton that owns all objects that have physics
+// and performs collision calculation as well as position
+// update
+class CollisionEngine {
+private:
+    std::vector<Plan*> plan_list;
+    std::vector<Sphere*> sphere_list;
+
+    void collision(Sphere* sphere, Plan* plan);
+    void collision(Sphere* sphere1, Sphere* sphere2);
+public:
+    void addForm(Sphere* form);
+    void addForm(Plan* form);
+    void collide();
+};
+
+
 class Table {
 private:
-    std::vector<Plan> plans;
     double length, width, height; // dimensions
 public:
-    Table(double length, double width, double height);
+    std::vector<Plan> plans;
+
+    Table(double length, double width, double height,
+             Form** forms_list, unsigned short& number_of_forms,
+             Color, Color);
 };
 
 #endif // FORMS_H_INCLUDED
