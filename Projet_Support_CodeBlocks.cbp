@@ -46,10 +46,12 @@
 			<Add library="glu32" />
 			<Add directory="./lib" />
 		</Linker>
+		<Unit filename="include/Camera.h" />
 		<Unit filename="include/animation.h" />
 		<Unit filename="include/forms.h" />
 		<Unit filename="include/geometry.h" />
 		<Unit filename="include/physics.h" />
+		<Unit filename="src/Camera.cpp" />
 		<Unit filename="src/animation.cpp" />
 		<Unit filename="src/first_prog.cpp" />
 		<Unit filename="src/forms.cpp" />

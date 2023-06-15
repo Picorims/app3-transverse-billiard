@@ -95,17 +95,16 @@ public:
 // update
 class CollisionEngine {
 private:
-    std::vector<Plan> plan_list;
-    std::vector<Sphere> sphere_list;
+    std::vector<Plan*> plan_list;
+    std::vector<Sphere*> sphere_list;
 
-    void collision(Sphere &sphere, Plan &plan);
-    void collision(Sphere &sphere1, Sphere &sphere2);
+    void collision(Sphere* sphere, Plan* plan);
+    void collision(Sphere* sphere1, Sphere* sphere2);
 public:
-    void addForm(Sphere &form);
-    void addForm(Plan &form);
+    void addForm(Sphere* form);
+    void addForm(Plan* form);
     void collide();
 };
-
 
 
 class Table {
