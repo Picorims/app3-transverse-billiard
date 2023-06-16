@@ -264,11 +264,8 @@ void CollisionEngine::collision(Sphere* sphere, Plan* plan)
                 if(Vcol.norm() <= sphere->getRadius()) // clipping, move the ball off the wall
                 {
                     Vector Ni = (1/Vcol.norm())* Vcol;
-                    //Ni = Ni * sphere->getRadius();
                     Ni = Ni * std::abs(sphere->getRadius() - Vcol.norm());
                     sphere->getAnim().setPos(Point(sphere->getAnim().getPos().x - Ni.x, sphere->getAnim().getPos().y, sphere->getAnim().getPos().z));
-                    //double offset = Vcol.norm();
-                    //sphere->getAnim().setPos(Point(sphere->getAnim().getPos().x - offset, sphere->getAnim().getPos().y, sphere->getAnim().getPos().z));
                 }
             }
             else if (Nplan.z != 0) // colliding with the wall and z axis is going through it
@@ -277,9 +274,7 @@ void CollisionEngine::collision(Sphere* sphere, Plan* plan)
                 if(Vcol.norm() <= sphere->getRadius()) // clipping, move the ball off the wall
                 {
                     Vector Ni = (1/Vcol.norm())* Vcol;
-                    //Ni = Ni * sphere->getRadius();
                     Ni = Ni * std::abs(sphere->getRadius() - Vcol.norm());
-                    //double offset = Vcol.norm();
                     sphere->getAnim().setPos(Point(sphere->getAnim().getPos().x, sphere->getAnim().getPos().y, sphere->getAnim().getPos().z - Ni.z));
                 }
             }
