@@ -124,4 +124,25 @@ public:
 
 int inPlan (Plan* P, Sphere* S);
 
+class Canne : public Form
+{
+private:
+    Vector vdir1;
+    Point origin;
+    double dt;
+
+public:
+    Sphere* pSphere;
+    Canne(Sphere* org = NULL,
+          Color cl = Color());
+    void update(double delta_t);
+    void render();
+
+    int x,y,z;
+    int coord[3][9][3]{{{-1,0,-1},{-1,0,0},{-1,0,1},{-1,-1,-1},{-1,-1,0},{-1,-1,1},{-1,1,-1},{-1,1,0},{-1,1,1}},
+                       {{0,0,-1},{0,0,0},{0,0,1},{0,-1,-1},{0,-1,0},{0,-1,1},{0,1,-1},{0,1,0},{0,1,1}},
+                       {{1,0,-1},{1,0,0},{1,0,1},{1,-1,-1},{1,-1,0},{1,-1,1},{1,1,-1},{1,1,0},{1,1,1}},
+                       };
+};
+
 #endif // FORMS_H_INCLUDED
