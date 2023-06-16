@@ -234,7 +234,7 @@ void CollisionEngine::collision(Sphere* sphere, Plan* plan)
 {
     //std::cout << "sphere plan" << std::endl;
     float atenuation = 0.7;
-    float atenuation2 = 1;
+    float atenuation2 = 0.99;
     Vector Nplan = plan->getDir1()^plan->getDir2();
     Vector PlanSphere;
     Vector Vout;
@@ -252,7 +252,7 @@ void CollisionEngine::collision(Sphere* sphere, Plan* plan)
         {
             if (Nplan.y != 0)
             {
-                Vout = Vector(Vout.x*atenuation, -Vout.y*atenuation, Vout.z*atenuation);
+                Vout = Vector(Vout.x*atenuation2, -Vout.y*atenuation, Vout.z*atenuation2);
                 if(sphere->getAnim().getPos().y - sphere->getRadius() - itBoxCecure < plan->getAnim().getPos().y)
                 {
                     sphere->getAnim().setPos(Point(sphere->getAnim().getPos().x, plan->getAnim().getPos().y + sphere->getRadius()+itBoxCecure, sphere->getAnim().getPos().z));
@@ -262,7 +262,7 @@ void CollisionEngine::collision(Sphere* sphere, Plan* plan)
             else if (Nplan.x != 0)
             {
 
-                Vout = Vector(-Vout.x*atenuation, Vout.y*atenuation, Vout.z*atenuation);
+                Vout = Vector(-Vout.x*atenuation2, Vout.y*atenuation, Vout.z*atenuation2);
                 if(Vcol.norm() <= sphere->getRadius())
                 {
                     Vector Ni = (1/Vcol.norm())* Vcol;
@@ -272,7 +272,7 @@ void CollisionEngine::collision(Sphere* sphere, Plan* plan)
             }
             else if (Nplan.z != 0)
             {
-                Vout = Vector(Vout.x*atenuation, Vout.y*atenuation, -Vout.z*atenuation);
+                Vout = Vector(Vout.x*atenuation2, Vout.y*atenuation, -Vout.z*atenuation2);
                 if(Vcol.norm() <= sphere->getRadius())
                 {
                     Vector Ni = (1/Vcol.norm())* Vcol;
@@ -284,7 +284,6 @@ void CollisionEngine::collision(Sphere* sphere, Plan* plan)
         }
     }
 }
-
 void CollisionEngine::collision(Sphere* sphere1, Sphere* sphere2)
 {
     // sphere1 with center A, sphere2 with center B
