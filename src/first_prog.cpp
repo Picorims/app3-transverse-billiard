@@ -466,6 +466,8 @@ int main(int argc, char* args[])
         bouleBlanc = new Sphere(0.1, WHITE);
         bouleBlanc->setRadius (0.3);
         sphAnim.setPos(Point(-9,bouleBlanc->getRadius() + 0.2,0));
+        bouleBlanc->setTexture(textureid_1);
+
         //sphAnim.setSpeed(Vector(sphAnim.getPos(), Point(40,0,0))); // v initiale dans plan x0y
         bouleBlanc->setAnim(sphAnim);
         forms_list[number_of_forms] = bouleBlanc;
@@ -731,7 +733,7 @@ int main(int argc, char* args[])
                         camera.lookAt(camera.getlookx(),camera.getlooky() - 1,camera.getlookz());
                         break;
                     case SDLK_m:
-                        bouleBlanc->getAnim().setSpeed(Vector(35,0,0));
+                        bouleBlanc->getAnim().setSpeed(Vector(30,0,0));
                         break;
                     default:
                         break;
