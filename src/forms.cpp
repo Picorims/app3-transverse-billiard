@@ -47,7 +47,7 @@ void Sphere::update(double delta_t)
     Vector OM(Point(0,0,0),ptM);
     Vector vit;
     Vector g(0,-9.81,0);
-    vit = this->anim.getSpeed() + 0.01*delta_t*g+Vector(0, -0.280, 0);
+    vit = this->anim.getSpeed() + 1*delta_t*g;
     this->anim.setSpeed(vit);
     OM = OM + delta_t*this->anim.getSpeed();
     ptM=Point(OM.x,OM.y,OM.z);
@@ -135,6 +135,8 @@ void Plan::render()
     // Autorisation de la texture choisie a la creation de la face (cf main())
     glEnable(GL_TEXTURE_2D);
     glBindTexture(GL_TEXTURE_2D, texture_id);
+
+
 
     // Actions communes a toutes les formes
     Form::render();
@@ -379,4 +381,38 @@ void CollisionEngine::collide()
             }
         }
     }
+}
+
+Canne::Canne(Sphere* org ,Color cl){
+    col = cl;
+    pSphere = org;
+    origin = org->getAnim().getPos();
+    dt = 0;
+    x = 1; y = 1 ; z = 1;
+}
+void Canne::update(double delta_t)
+{
+    //Point test(0,0,0);
+    //origin = test;
+    origin = pSphere->getAnim().getPos();
+    //pSphere->getAnim().setSpeed()
+
+}
+
+void Canne::render()
+{
+
+    glBegin(GL_LINES);
+    {
+
+        glColor3f(1.0f, 0.0f, 0.0f);
+        glVertex3f(origin.x, origin.y, origin.z);
+        glVertex3f(origin.x + coord[x][y][0], origin.y + coord[x][y][2], origin.z + coord[x][y][1]);
+        //glRotated(dt, 1, 1, 1);
+        //glRotated(dt, 0, 1, 0);
+        //glRotated(dt, 1, 0, 0);
+        //dt++;
+    }
+    glEnd();
+
 }
