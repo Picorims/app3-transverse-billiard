@@ -17,8 +17,8 @@ void Form::render()
     Point org = anim.getPos();
     glTranslated(org.x, org.y, org.z);
 
-    //glRotated(anim.getTheta(), 1,0,0);
-    //glRotated(anim.getPhi(), 0,1,0);
+    glRotated(anim.getTheta(), 1,0,0);
+    glRotated(anim.getPhi(), 0,1,0);
 
     glColor3f(col.r, col.g, col.b);
 }
@@ -32,9 +32,7 @@ Sphere::Sphere(double r, Color cl)
 
 void Sphere::update(double delta_t)
 {
-    // TODO update position, speed, acceleration here
-
-    // Complete this part
+    // le moteur d'exemple est suffisant pour notre projet
 
     // Exemple d'animation liee a la physique :
     // Dans un repere Galileen sans force appliquee un objet
@@ -47,7 +45,8 @@ void Sphere::update(double delta_t)
     Vector OM(Point(0,0,0),ptM);
     Vector vit;
     Vector g(0,-9.81,0);
-    vit = this->anim.getSpeed() + 1*delta_t*g;
+    Vector weight = Vector(0,-0.250,0);
+    vit = this->anim.getSpeed() + 1*delta_t*g + weight;
     this->anim.setSpeed(vit);
     OM = OM + delta_t*this->anim.getSpeed();
     ptM=Point(OM.x,OM.y,OM.z);
@@ -112,8 +111,6 @@ Plan::Plan(Vector v1, Vector v2, Point org, double l, double w, Color cl)
 
 void Plan::update(double delta_t)
 {
-    // TODO update position, speed, acceleration here
-
     // Angles update for the animation example
     // Ceci n est qu un exemple d animation
     // Aucune physique particuliere n est utilisee ici
@@ -203,6 +200,8 @@ Table::Table(double length, double width, double height, Form** forms_list, unsi
 
 // TOOL COLLISION =========================
 
+// check if the sphere is within the boundaries of the plan.
+// Note: it does NOT check if the plan collides with the sphare!
 int inPlan (Plan* P, Sphere* S)
 {
     Vector N = P->getDir1()^P->getDir2();
@@ -230,6 +229,10 @@ int inPlan (Plan* P, Sphere* S)
 
 // COLLISION ENGINE =======================
 
+// test if the sphere collides with the plan, and update the speed and position accordingly.
+// Note: there are limitations, as it only supports plans aligned with the axes of the base.
+// It also only considers a collision AFTER clipping, thus with a very high speed a ball
+// can go through the plan.
 void CollisionEngine::collision(Sphere* sphere, Plan* plan)
 {
     //std::cout << "sphere plan" << std::endl;
@@ -286,6 +289,10 @@ void CollisionEngine::collision(Sphere* sphere, Plan* plan)
         }
     }
 }
+
+// test if the sphere collides with the plan, and update the speed and position accordingly.
+// Note: the collision only occures AFTER clipping, so very high speeds can make the balls
+// not collide at all, or collide in unexpected ways.
 void CollisionEngine::collision(Sphere* sphere1, Sphere* sphere2)
 {
     // sphere1 with center A, sphere2 with center B
@@ -350,20 +357,32 @@ void CollisionEngine::collision(Sphere* sphere1, Sphere* sphere2)
     }
 }
 
+// register a sphere in the collision engine.
 void CollisionEngine::addForm(Sphere* form)
 {
     std::cout << "added sphere" << std::endl;
     sphere_list.push_back(form);
 }
 
+// register a plan in the collision engine.
 void CollisionEngine::addForm(Plan* form)
 {
     std::cout << "added plan" << std::endl;
     plan_list.push_back(form);
 }
 
+// This function should be called once per update before updating the forms.
+// It test collision for all forms with all other forms (without duplicate tests).
 void CollisionEngine::collide()
 {
+    // The different arrays are chained together when iterating ("placed" one after another),
+    // Thus all arrays are explored together.
+    // The index tells us in which array the Form is (if the index exceeds the first array,
+    // then it is in the second array).
+    // Based on indexes, we can pick the fitting collision test and call it against the forms.
+    // At the end of the main loops, all speeds have been updated when needed, and all positions
+    // have been adjusted to prevent clipping after collision.
+
     unsigned short total_size = sphere_list.size() + plan_list.size();
     for (unsigned short i = 0; i < total_size; i++)
     {
