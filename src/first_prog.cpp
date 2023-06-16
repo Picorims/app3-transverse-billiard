@@ -669,7 +669,7 @@ int main(int argc, char* args[])
 
 
                     }
-                    else if(key_pressed == SDLK_4){
+                    else if(key_pressed == SDLK_n){
 
                         pCanne->pSphere->getAnim().setSpeed(Vector(force*-1*pCanne->coord[pCanne->x][pCanne->y][0],force*-1*pCanne->coord[pCanne->x][pCanne->y][2],force*-1*pCanne->coord[pCanne->x][pCanne->y][1]));
                         force = 0;
@@ -689,12 +689,7 @@ int main(int argc, char* args[])
                     case SDLK_ESCAPE:
                         quit = true;
                         break;
-                    case SDLK_z:
-                        camera.setPos(camera.getx(),camera.gety() + 1,camera.getz());
-                        break;
-                    case SDLK_s:
-                        camera.setPos(camera.getx(),camera.gety() - 1,camera.getz());
-                        break;
+
                     case SDLK_RIGHT:
                         camera.setPos(camera.getx(),camera.gety(),camera.getz() - 1);
                         camera.lookAt(camera.getlookx(),camera.getlooky(),camera.getlookz() - 1);
@@ -717,7 +712,7 @@ int main(int argc, char* args[])
                         if(force>=35) force = 35;
                         std::cout << "force : " << force << std::endl;
                         break;
-                    case SDLK_PERCENT:
+                    case SDLK_n:
                         force += 1;
                         std::cout << "force : " << force << std::endl;
                         break;
