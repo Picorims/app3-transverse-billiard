@@ -47,7 +47,7 @@ void Sphere::update(double delta_t)
     Vector OM(Point(0,0,0),ptM);
     Vector vit;
     Vector g(0,-9.81,0);
-    vit = this->anim.getSpeed() + 0.01*delta_t*g+Vector(0, -0.280, 0);
+    vit = this->anim.getSpeed() + 1*delta_t*g;
     this->anim.setSpeed(vit);
     OM = OM + delta_t*this->anim.getSpeed();
     ptM=Point(OM.x,OM.y,OM.z);
@@ -230,9 +230,9 @@ int inPlan (Plan* P, Sphere* S)
 
 void CollisionEngine::collision(Sphere* sphere, Plan* plan)
 {
-    std::cout << "sphere plan" << std::endl;
-    float atenuation = 0.7;
-    float atenuation2 = 1;
+    //std::cout << "sphere plan" << std::endl;
+    float atenuation = 0.7; // vertical energy loss
+    float atenuation2 = 0.985; // horizontal energy loss (when rolling)
     Vector Nplan = plan->getDir1()^plan->getDir2();
     Vector PlanSphere;
     Vector Vout;
@@ -244,37 +244,37 @@ void CollisionEngine::collision(Sphere* sphere, Plan* plan)
 
     Vector Vcol = (PlanSphere*Nplan)*Nplan;
     float itBoxCecure = 0;
-    if (Vcol.norm() <= sphere->getRadius()+itBoxCecure)
+    if (Vcol.norm() <= sphere->getRadius()+itBoxCecure) // colliding on the infinite plan ?
     {
-        if (inPlan(plan, sphere) == 1)
+        if (inPlan(plan, sphere) == 1) // colliding within the real boundaries of the plan ?
         {
-            if (Nplan.y != 0)
+            if (Nplan.y != 0) // colliding with the ground
             {
-                Vout = Vector(Vout.x*atenuation, -Vout.y*atenuation, Vout.z*atenuation);
+                Vout = Vector(Vout.x*atenuation2, -Vout.y*atenuation, Vout.z*atenuation2);
                 if(sphere->getAnim().getPos().y - sphere->getRadius() - itBoxCecure < plan->getAnim().getPos().y)
                 {
                     sphere->getAnim().setPos(Point(sphere->getAnim().getPos().x, plan->getAnim().getPos().y + sphere->getRadius()+itBoxCecure, sphere->getAnim().getPos().z));
                 }
 
             }
-            else if (Nplan.x != 0)
+            else if (Nplan.x != 0) // colliding with the wall and x axis is going through it
             {
 
-                Vout = Vector(-Vout.x*atenuation, Vout.y*atenuation, Vout.z*atenuation);
-                if(Vcol.norm() <= sphere->getRadius())
+                Vout = Vector(-Vout.x*atenuation2, Vout.y*atenuation, Vout.z*atenuation2);
+                if(Vcol.norm() <= sphere->getRadius()) // clipping, move the ball off the wall
                 {
                     Vector Ni = (1/Vcol.norm())* Vcol;
-                    Ni = Ni * sphere->getRadius();
+                    Ni = Ni * std::abs(sphere->getRadius() - Vcol.norm());
                     sphere->getAnim().setPos(Point(sphere->getAnim().getPos().x - Ni.x, sphere->getAnim().getPos().y, sphere->getAnim().getPos().z));
                 }
             }
-            else if (Nplan.z != 0)
+            else if (Nplan.z != 0) // colliding with the wall and z axis is going through it
             {
-                Vout = Vector(Vout.x*atenuation, Vout.y*atenuation, -Vout.z*atenuation);
-                if(Vcol.norm() <= sphere->getRadius())
+                Vout = Vector(Vout.x*atenuation2, Vout.y*atenuation, -Vout.z*atenuation2);
+                if(Vcol.norm() <= sphere->getRadius()) // clipping, move the ball off the wall
                 {
                     Vector Ni = (1/Vcol.norm())* Vcol;
-                    Ni = Ni * sphere->getRadius();
+                    Ni = Ni * std::abs(sphere->getRadius() - Vcol.norm());
                     sphere->getAnim().setPos(Point(sphere->getAnim().getPos().x, sphere->getAnim().getPos().y, sphere->getAnim().getPos().z - Ni.z));
                 }
             }
