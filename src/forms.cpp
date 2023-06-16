@@ -35,9 +35,7 @@ Sphere::Sphere(double r, Color cl)
 
 void Sphere::update(double delta_t)
 {
-    // TODO update position, speed, acceleration here
-
-    // Complete this part
+    // le moteur d'exemple est suffisant pour notre projet
 
     // Exemple d'animation liee a la physique :
     // Dans un repere Galileen sans force appliquee un objet
@@ -50,7 +48,8 @@ void Sphere::update(double delta_t)
     Vector OM(Point(0,0,0),ptM);
     Vector vit;
     Vector g(0,-9.81,0);
-    vit = this->anim.getSpeed() + 0.01*delta_t*g+Vector(0, -0.280, 0);
+    Vector weight = Vector(0,-0.250,0);
+    vit = this->anim.getSpeed() + 1*delta_t*g + weight;
     this->anim.setSpeed(vit);
     OM = OM + delta_t*this->anim.getSpeed();
     ptM=Point(OM.x,OM.y,OM.z);
@@ -157,8 +156,6 @@ Plan::Plan(Vector v1, Vector v2, Point org, double l, double w, Color cl)
 
 void Plan::update(double delta_t)
 {
-    // TODO update position, speed, acceleration here
-
     // Angles update for the animation example
     // Ceci n est qu un exemple d animation
     // Aucune physique particuliere n est utilisee ici
@@ -180,6 +177,8 @@ void Plan::render()
     // Autorisation de la texture choisie a la creation de la face (cf main())
     glEnable(GL_TEXTURE_2D);
     glBindTexture(GL_TEXTURE_2D, texture_id);
+
+
 
     // Actions communes a toutes les formes
     Form::render();
@@ -246,6 +245,8 @@ Table::Table(double length, double width, double height, Form** forms_list, unsi
 
 // TOOL COLLISION =========================
 
+// check if the sphere is within the boundaries of the plan.
+// Note: it does NOT check if the plan collides with the sphare!
 int inPlan (Plan* P, Sphere* S)
 {
     Vector N = P->getDir1()^P->getDir2();
@@ -273,11 +274,16 @@ int inPlan (Plan* P, Sphere* S)
 
 // COLLISION ENGINE =======================
 
+// test if the sphere collides with the plan, and update the speed and position accordingly.
+// Note: there are limitations, as it only supports plans aligned with the axes of the base.
+// It also only considers a collision AFTER clipping, thus with a very high speed a ball
+// can go through the plan.
 void CollisionEngine::collision(Sphere* sphere, Plan* plan)
 {
     //std::cout << "sphere plan" << std::endl;
-    float atenuation = 0.7;
-    float atenuation2 = 0.99;
+    float atenuation = 0.7; // vertical energy loss
+    float atenuation2 = 0.985; // horizontal energy loss (when rolling)
+
     Vector Nplan = plan->getDir1()^plan->getDir2();
     Vector PlanSphere;
     Vector Vout;
@@ -289,11 +295,11 @@ void CollisionEngine::collision(Sphere* sphere, Plan* plan)
 
     Vector Vcol = (PlanSphere*Nplan)*Nplan;
     float itBoxCecure = 0;
-    if (Vcol.norm() <= sphere->getRadius()+itBoxCecure)
+    if (Vcol.norm() <= sphere->getRadius()+itBoxCecure) // colliding on the infinite plan ?
     {
-        if (inPlan(plan, sphere) == 1)
+        if (inPlan(plan, sphere) == 1) // colliding within the real boundaries of the plan ?
         {
-            if (Nplan.y != 0)
+            if (Nplan.y != 0) // colliding with the ground
             {
                 Vout = Vector(Vout.x*atenuation2, -Vout.y*atenuation, Vout.z*atenuation2);
                 if(sphere->getAnim().getPos().y - sphere->getRadius() - itBoxCecure < plan->getAnim().getPos().y)
@@ -302,24 +308,25 @@ void CollisionEngine::collision(Sphere* sphere, Plan* plan)
                 }
 
             }
-            else if (Nplan.x != 0)
+            else if (Nplan.x != 0) // colliding with the wall and x axis is going through it
             {
 
                 Vout = Vector(-Vout.x*atenuation2, Vout.y*atenuation, Vout.z*atenuation2);
-                if(Vcol.norm() <= sphere->getRadius())
+                if(Vcol.norm() <= sphere->getRadius()) // clipping, move the ball off the wall
                 {
                     Vector Ni = (1/Vcol.norm())* Vcol;
-                    Ni = Ni * sphere->getRadius();
+                    Ni = Ni * std::abs(sphere->getRadius() - Vcol.norm());
                     sphere->getAnim().setPos(Point(sphere->getAnim().getPos().x - Ni.x, sphere->getAnim().getPos().y, sphere->getAnim().getPos().z));
                 }
             }
-            else if (Nplan.z != 0)
+            else if (Nplan.z != 0) // colliding with the wall and z axis is going through it
             {
                 Vout = Vector(Vout.x*atenuation2, Vout.y*atenuation, -Vout.z*atenuation2);
-                if(Vcol.norm() <= sphere->getRadius())
+
+                if(Vcol.norm() <= sphere->getRadius()) // clipping, move the ball off the wall
                 {
                     Vector Ni = (1/Vcol.norm())* Vcol;
-                    Ni = Ni * sphere->getRadius();
+                    Ni = Ni * std::abs(sphere->getRadius() - Vcol.norm());
                     sphere->getAnim().setPos(Point(sphere->getAnim().getPos().x, sphere->getAnim().getPos().y, sphere->getAnim().getPos().z - Ni.z));
                 }
             }
@@ -327,6 +334,10 @@ void CollisionEngine::collision(Sphere* sphere, Plan* plan)
         }
     }
 }
+
+// test if the sphere collides with the plan, and update the speed and position accordingly.
+// Note: the collision only occures AFTER clipping, so very high speeds can make the balls
+// not collide at all, or collide in unexpected ways.
 void CollisionEngine::collision(Sphere* sphere1, Sphere* sphere2)
 {
     // sphere1 with center A, sphere2 with center B
@@ -391,20 +402,32 @@ void CollisionEngine::collision(Sphere* sphere1, Sphere* sphere2)
     }
 }
 
+// register a sphere in the collision engine.
 void CollisionEngine::addForm(Sphere* form)
 {
     std::cout << "added sphere" << std::endl;
     sphere_list.push_back(form);
 }
 
+// register a plan in the collision engine.
 void CollisionEngine::addForm(Plan* form)
 {
     std::cout << "added plan" << std::endl;
     plan_list.push_back(form);
 }
 
+// This function should be called once per update before updating the forms.
+// It test collision for all forms with all other forms (without duplicate tests).
 void CollisionEngine::collide()
 {
+    // The different arrays are chained together when iterating ("placed" one after another),
+    // Thus all arrays are explored together.
+    // The index tells us in which array the Form is (if the index exceeds the first array,
+    // then it is in the second array).
+    // Based on indexes, we can pick the fitting collision test and call it against the forms.
+    // At the end of the main loops, all speeds have been updated when needed, and all positions
+    // have been adjusted to prevent clipping after collision.
+
     unsigned short total_size = sphere_list.size() + plan_list.size();
     for (unsigned short i = 0; i < total_size; i++)
     {
@@ -424,4 +447,38 @@ void CollisionEngine::collide()
             }
         }
     }
+}
+
+Canne::Canne(Sphere* org ,Color cl){
+    col = cl;
+    pSphere = org;
+    origin = org->getAnim().getPos();
+    dt = 0;
+    x = 0 ; y = 1 ; z = 1;
+}
+void Canne::update(double delta_t)
+{
+    //Point test(0,0,0);
+    //origin = test;
+    origin = pSphere->getAnim().getPos();
+    //pSphere->getAnim().setSpeed()
+
+}
+
+void Canne::render()
+{
+
+    glBegin(GL_LINES);
+    {
+
+        glColor3f(1.0f, 0.0f, 0.0f);
+        glVertex3f(origin.x, origin.y, origin.z);
+        glVertex3f(origin.x + coord[x][y][0], origin.y + coord[x][y][2], origin.z + coord[x][y][1]);
+        //glRotated(dt, 1, 1, 1);
+        //glRotated(dt, 0, 1, 0);
+        //glRotated(dt, 1, 0, 0);
+        //dt++;
+    }
+    glEnd();
+
 }

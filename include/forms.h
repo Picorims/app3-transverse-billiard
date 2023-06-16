@@ -12,7 +12,7 @@
 class IPhysicsForm
 {
 protected:
-    bool physicsEnabled = true;
+    bool physicsEnabled = true; // TODO enforce booleans
     bool isStatic = false;
 };
 
@@ -106,10 +106,17 @@ public:
 
 
 // singleton that owns all objects that have physics
-// and performs collision calculation as well as position
-// update
+// and performs collision calculation. Object position update is
+// performed by the update function of forms (for example Sphere::update)
 class CollisionEngine {
 private:
+    // objects are stored per type to deduct which kind of collision
+    // should be performed between each forms.
+
+    // only objects added through addForm() are taken into account! If the object is NOT in
+    // the collision engine, then it do NOT have any hitbox and is never tested
+    // for collision. This allows to have forms that only serve as display.
+
     std::vector<Plan*> plan_list;
     std::vector<Sphere*> sphere_list;
 
@@ -134,5 +141,26 @@ public:
 };
 
 int inPlan (Plan* P, Sphere* S);
+
+class Canne : public Form
+{
+private:
+    Vector vdir1;
+    Point origin;
+    double dt;
+
+public:
+    Sphere* pSphere;
+    Canne(Sphere* org = NULL,
+          Color cl = Color());
+    void update(double delta_t);
+    void render();
+
+    int x,y,z;
+    int coord[3][9][3]{{{-1,0,-1},{-1,0,0},{-1,0,1},{-1,-1,-1},{-1,-1,0},{-1,-1,1},{-1,1,-1},{-1,1,0},{-1,1,1}},
+                       {{0,0,-1},{0,0,0},{0,0,1},{0,-1,-1},{0,-1,0},{0,-1,1},{0,1,-1},{0,1,0},{0,1,1}},
+                       {{1,0,-1},{1,0,0},{1,0,1},{1,-1,-1},{1,-1,0},{1,-1,1},{1,1,-1},{1,1,0},{1,1,1}},
+                       };
+};
 
 #endif // FORMS_H_INCLUDED

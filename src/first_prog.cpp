@@ -35,7 +35,7 @@ const Uint32 ANIM_DELAY = 5;
 
 // Render actualization delay 40 (in ms) => 25 updates per second
 // 1000 / x = y => FRAME_DELAY = y for a framerate of x
-const Uint32 FRAME_DELAY = 15;
+const Uint32 FRAME_DELAY = 10;
 
 
 // Starts up SDL, creates window, and initializes OpenGL
@@ -309,8 +309,10 @@ int main(int argc, char* args[])
     int cptCol = 0;
     int mousePosition[4] = {0,0,0,0}; // position 0 and 1 are the current tick mouse position while 2 and 3 are previous tick position
     Camera camera;
-    camera.setX(10);
     bool mClick = false;
+    //simple float permettant de déterminer a force à appliquer dans la balle blanche
+    float force = 0;
+    Point zerozero(0,1,0);
 
     // The window we'll be rendering to
     SDL_Window* gWindow = NULL;
@@ -363,106 +365,23 @@ int main(int argc, char* args[])
         // Create here specific forms and add them to the list...
         // Don't forget to update the actual number_of_forms !
 
-        /*Plan *pFace = NULL;
-        pFace = new Plan(Vector(1,0,0), Vector(0,1,0), Point(-0.5, -0.5, -0.5), 1, 1, ORANGE); // For the cube
-        pFace = new Plan(Vector(1,0,0), Vector(0,1,0), Point(0.5, 0, 0.5), 1, 1, WHITE); // For the animation
-        pFace->setTexture(textureid_1);
-        forms_list[number_of_forms] = pFace;
-        number_of_forms++;
-
-        engine.addForm(pFace);*/
-
-
         Table *pTable = NULL;
         pTable = new Table(2.24*10, 1.12*10, 0.1*10, forms_list, number_of_forms, GREEN, ORANGE, engine);
-        //pTable = new Table(3, 2, 0.5, forms_list, number_of_forms, GREEN, ORANGE);
 
         // Sol (NE PAS ENLEVER)
         Plan *pSol = NULL;
-        pSol = new Plan(Vector(1,0,0), Vector(0,0,1), Point(-50, -3, -50), 100, 100, WHITE); // For the animation
+        pSol = new Plan(Vector(1,0,0), Vector(0,0,1), Point(-100, -10, -100), 200, 200, WHITE); // For the animation
         pSol->setTexture(textureid_sol);
         forms_list[number_of_forms] = pSol;
         engine.addForm(pSol);
         number_of_forms++;
 
-/*
-        // Plan *pFace = NULL;
-        // pFace = new Plan(Vector(1,0,0), Vector(0,1,0), Point(0.5, 0, 0.5), 1, 1, WHITE); // For the animation
-        // pFace->setTexture(textureid_1);
-        // forms_list[number_of_forms] = pFace;
-        // number_of_forms++;
-
-        // pFace = new Plan(Vector(1,0,0), Vector(0,0,1), Point(-0.5, -0.5, -0.5), 1, 1, BLUE);
-        // forms_list[number_of_forms] = pFace;
-        // number_of_forms++;
-
-        // engine.addForm(*pFace);
-
-        // Spheres
-        Sphere* pSphere = NULL;
-        Animation sphAnim;
-        pSphere = new Sphere(0.2, WHITE);
-        sphAnim.setPos(Point(0,0,0));
-        sphAnim.setPhi(0); // angle en degre
-        sphAnim.setTheta(0); // angle en degre
-        //sphAnim.setSpeed(Vector(0,0.6,0)); // v initiale colineaire a Ox
-        pSphere->setAnim(sphAnim);
-        pSphere->setTexture(textureid_1);
-        pSphere->getAnim().setPhi(10);
-        forms_list[number_of_forms] = pSphere;
-        number_of_forms++;
-
-        engine.addForm(pSphere);
-
-        pSphere = new Sphere(0.2, RED);
-        Animation sphAnim2;
-        sphAnim2.setPos(Point(0,0.1,0.1));
-        //sphAnim2.setSpeed(Vector(-0.05,-0.05,-0.15)); // v initiale dans plan x0y
-        pSphere->setAnim(sphAnim2);
-        pSphere->setTexture(textureid_2);
-        forms_list[number_of_forms] = pSphere;
-        number_of_forms++;
-*/
-/*
-        Plan *pFace = NULL;
-        pFace = new Plan(Vector(1,0,0), Vector(0,0,1), Point(0, 0, 0), 1, 1, WHITE); // For the animation
-        forms_list[number_of_forms] = pFace;
-        number_of_forms++;
-
-        engine.addForm(pFace);
-
-        Plan *pFace2 = NULL;
-        pFace2 = new Plan(Vector(0,0,1), Vector(0,1,0), Point(1, 0, 0), 1, 1, WHITE); // For the animation
-        forms_list[number_of_forms] = pFace2;
-        number_of_forms++;
-
-        engine.addForm(pFace2);
-
-        Plan *pFace3 = NULL;
-        pFace3 = new Plan(Vector(0,0,1), Vector(0,1,0), Point(-1, 0, 0), 1, 1, WHITE); // For the animation
-        forms_list[number_of_forms] = pFace3;
-        number_of_forms++;
-
-        engine.addForm(pFace3);
-
-        Plan *pFace4 = NULL;
-        pFace4 = new Plan(Vector(1,0,0), Vector(0,1,0), Point(1, 0, 1), 1, 1, WHITE); // For the animation
-        forms_list[number_of_forms] = pFace4;
-        number_of_forms++;
-
-        engine.addForm(pFace4);
-
-        Plan *pFace5 = NULL;
-        pFace5 = new Plan(Vector(1,0,0), Vector(0,1,0), Point(-1, 0, 0), 1, 1, WHITE); // For the animation
-        forms_list[number_of_forms] = pFace5;
-        number_of_forms++;
-
-        engine.addForm(pFace5);
-*/
-        // Spheres
+        // Spheres du billard vvvvv ============================================================
         // Boule Blanche
+        Sphere* pSphere = NULL;
         Sphere* bouleBlanc = NULL;
         Animation sphAnim;
+
         bouleBlanc = new Sphere(0.1, WHITE);
         bouleBlanc->setRadius (0.3);
         sphAnim.setPos(Point(-9,bouleBlanc->getRadius() + 0.2,0));
@@ -471,6 +390,7 @@ int main(int argc, char* args[])
         //sphAnim.setSpeed(Vector(sphAnim.getPos(), Point(40,0,0))); // v initiale dans plan x0y
         bouleBlanc->setAnim(sphAnim);
         forms_list[number_of_forms] = bouleBlanc;
+
         number_of_forms++;
         engine.addForm(bouleBlanc);
 
@@ -615,34 +535,36 @@ int main(int argc, char* args[])
         number_of_forms++;
         engine.addForm(bouleRouge);
 
+        // Spheres du billard ^^^^^^ ============================================================
 
-        // unsigned short k = 0;
-        // srand(time(NULL));
 
-        // for (k = 0; k < 0; k++) { // nombre de boules crées aléatoireement pour tester
-        //     pSphere = new Sphere(0.2, RED);
-        //     Animation sphAnimk;
-        //     sphAnimk.setPos(Point(randf(5),randf(5),randf(5)));
-        //     sphAnimk.setSpeed(Vector(sphAnimk.getPos(), Point(0,0,0))); // v initiale dans plan x0y
-        //     pSphere->setAnim(sphAnimk);
-        //     pSphere->setTexture(textureid_2);
-        //     forms_list[number_of_forms] = pSphere;
-        //     number_of_forms++;
+        Canne* pCanne = NULL;
+        pCanne = new Canne(bouleBlanc,GREEN);
+        forms_list[number_of_forms] = pCanne;
+        number_of_forms++;
 
-        //     engine.addForm(pSphere);
-        // }
+        // tests de stress - balles aléatoires == vvvvvv ==================================
+        unsigned short k = 0;
+        srand(time(NULL));
+        for (k = 0; k < 0; k++) { // nombre de boules crées aléatoireement pour tester
+            pSphere = new Sphere(0.2, RED);
+            Animation sphAnimk;
+            sphAnimk.setPos(Point(randf(5),1,randf(5)));
+            sphAnimk.setSpeed(Vector(sphAnimk.getPos(), Point(0,0,0))); // v initiale dans plan x0y
+            pSphere->setAnim(sphAnimk);
+            pSphere->setTexture(textureid_2);
+            forms_list[number_of_forms] = pSphere;
+            number_of_forms++;
+
+            engine.addForm(pSphere);
+        }
+        // tests de stress - balles aléatoires == ^^^^^^ ==================================
 
         // Get first "current time"
         previous_time_anim = previous_time_render = SDL_GetTicks();
         // While application is running
         while(!quit)
         {
-            /*cptCol++;
-            if (cptCol >= 21000)
-            {
-                engine.collision(*pSphere, *pFace);
-                cptCol = 0;
-            }*/
 
             if(mClick){
                 //update mouse posiion
@@ -699,6 +621,23 @@ int main(int argc, char* args[])
                     mClick = false;
                     break;
 
+                case SDL_KEYUP:
+                    if(key_pressed == SDLK_m){
+
+                        pCanne->pSphere->getAnim().setSpeed(Vector(force*-1*pCanne->coord[pCanne->x][pCanne->y][0],force*-1*pCanne->coord[pCanne->x][pCanne->y][2],force*-1*pCanne->coord[pCanne->x][pCanne->y][1]));
+                        force = 0;
+
+
+                    }
+                    else if(key_pressed == SDLK_n){
+
+                        pCanne->pSphere->getAnim().setSpeed(Vector(force*-1*pCanne->coord[pCanne->x][pCanne->y][0],force*-1*pCanne->coord[pCanne->x][pCanne->y][2],force*-1*pCanne->coord[pCanne->x][pCanne->y][1]));
+                        force = 0;
+
+
+                    }
+                    break;
+
                 case SDL_KEYDOWN:
                     // Handle key pressed with current mouse position
                     SDL_GetMouseState( &x, &y );
@@ -710,12 +649,7 @@ int main(int argc, char* args[])
                     case SDLK_ESCAPE:
                         quit = true;
                         break;
-                    case SDLK_z:
-                        camera.setPos(camera.getx(),camera.gety() + 1,camera.getz());
-                        break;
-                    case SDLK_s:
-                        camera.setPos(camera.getx(),camera.gety() - 1,camera.getz());
-                        break;
+
                     case SDLK_RIGHT:
                         camera.setPos(camera.getx(),camera.gety(),camera.getz() - 1);
                         camera.lookAt(camera.getlookx(),camera.getlooky(),camera.getlookz() - 1);
@@ -732,9 +666,75 @@ int main(int argc, char* args[])
                         camera.setPos(camera.getx(),camera.gety() - 1,camera.getz());
                         camera.lookAt(camera.getlookx(),camera.getlooky() - 1,camera.getlookz());
                         break;
+
                     case SDLK_m:
-                        bouleBlanc->getAnim().setSpeed(Vector(30,0,0));
+                        force += 1;
+                        if(force>=35) force = 35;
+                        std::cout << "force : " << force << std::endl;
                         break;
+                    case SDLK_n:
+                        force += 1;
+                        std::cout << "force : " << force << std::endl;
+                        break;
+                    case SDLK_o:
+                        pCanne->pSphere->getAnim().setSpeed(Vector(0,0,0));
+                        pCanne->pSphere->getAnim().setPos(zerozero);
+
+                        break;
+                    case SDLK_0:
+                        pCanne->y = 0;
+                        pCanne->x = 0;
+
+                    case SDLK_i:
+                        pCanne->y++;
+                        if(pCanne->y >= 9 ) pCanne->y = 0;
+                        break;
+                    case SDLK_k:
+                        pCanne->y--;
+                        if(pCanne->y <= -1 ) pCanne->y = 8;
+                        break;
+
+
+
+                    case SDLK_1:
+                        pCanne->y = 3;
+                        break;
+                    case SDLK_2:
+                        pCanne->y = 0;
+                        break;
+                    case SDLK_3:
+                        pCanne->y = 6;
+                        break;
+                    case SDLK_4:
+                        pCanne->y = 4;
+                        break;
+                    case SDLK_5:
+                        pCanne->y = 1;
+                        break;
+                    case SDLK_6:
+                        pCanne->y = 7;
+                        break;
+                    case SDLK_7:
+                        pCanne->y = 5;
+                        break;
+                    case SDLK_8:
+                        pCanne->y = 2;
+                        break;
+                    case SDLK_9:
+                        pCanne->y = 8;
+                        break;
+
+                    case SDLK_l:
+                        pCanne->x++;
+                        if(pCanne->x >= 3 ) pCanne->x = 0;
+
+                        break;
+                    case SDLK_j:
+                        pCanne->x--;
+                        if(pCanne->x <= -1 ) pCanne->x = 2;
+
+                        break;
+
                     default:
                         break;
                     }
