@@ -365,16 +365,6 @@ int main(int argc, char* args[])
         // Create here specific forms and add them to the list...
         // Don't forget to update the actual number_of_forms !
 
-        /*Plan *pFace = NULL;
-        pFace = new Plan(Vector(1,0,0), Vector(0,1,0), Point(-0.5, -0.5, -0.5), 1, 1, ORANGE); // For the cube
-        pFace = new Plan(Vector(1,0,0), Vector(0,1,0), Point(0.5, 0, 0.5), 1, 1, WHITE); // For the animation
-        pFace->setTexture(textureid_1);
-        forms_list[number_of_forms] = pFace;
-        number_of_forms++;
-
-        engine.addForm(pFace);*/
-
-
         Table *pTable = NULL;
         pTable = new Table(2.24*10, 1.12*10, 0.1*10, forms_list, number_of_forms, GREEN, ORANGE, engine);
 
@@ -386,34 +376,7 @@ int main(int argc, char* args[])
         engine.addForm(pSol);
         number_of_forms++;
 
-/*
-        // Spheres
-        Sphere* pSphere = NULL;
-        Animation sphAnim;
-        pSphere = new Sphere(0.2, WHITE);
-        sphAnim.setPos(Point(0,0,0));
-        sphAnim.setPhi(0); // angle en degre
-        sphAnim.setTheta(0); // angle en degre
-        //sphAnim.setSpeed(Vector(0,0.6,0)); // v initiale colineaire a Ox
-        pSphere->setAnim(sphAnim);
-        pSphere->setTexture(textureid_1);
-        pSphere->getAnim().setPhi(10);
-        forms_list[number_of_forms] = pSphere;
-        number_of_forms++;
-
-        engine.addForm(pSphere);
-
-        pSphere = new Sphere(0.2, RED);
-        Animation sphAnim2;
-        sphAnim2.setPos(Point(0,0.1,0.1));
-        //sphAnim2.setSpeed(Vector(-0.05,-0.05,-0.15)); // v initiale dans plan x0y
-        pSphere->setAnim(sphAnim2);
-        pSphere->setTexture(textureid_2);
-        forms_list[number_of_forms] = pSphere;
-        number_of_forms++;
-*/
-
-        // Spheres
+        // Spheres du billard vvvvv ============================================================
         // Boule Blanche
         Sphere* pSphere = NULL;
         Sphere* bouleBlanc = NULL;
@@ -580,11 +543,15 @@ int main(int argc, char* args[])
         number_of_forms++;
         engine.addForm(bouleRouge);
 
+        // Spheres du billard ^^^^^^ ============================================================
+
+
         Canne* pCanne = NULL;
         pCanne = new Canne(bouleBlanc,GREEN);
         forms_list[number_of_forms] = pCanne;
         number_of_forms++;
 
+        // tests de stress - balles aléatoires == vvvvvv ==================================
         unsigned short k = 0;
         srand(time(NULL));
         for (k = 0; k < 0; k++) { // nombre de boules crées aléatoireement pour tester
@@ -599,6 +566,7 @@ int main(int argc, char* args[])
 
             engine.addForm(pSphere);
         }
+        // tests de stress - balles aléatoires == ^^^^^^ ==================================
 
         // Get first "current time"
         previous_time_anim = previous_time_render = SDL_GetTicks();
