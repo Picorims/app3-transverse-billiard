@@ -669,7 +669,7 @@ int main(int argc, char* args[])
 
 
                     }
-                    else if(key_pressed == SDLK_4){
+                    else if(key_pressed == SDLK_n){
 
                         pCanne->pSphere->getAnim().setSpeed(Vector(force*-1*pCanne->coord[pCanne->x][pCanne->y][0],force*-1*pCanne->coord[pCanne->x][pCanne->y][2],force*-1*pCanne->coord[pCanne->x][pCanne->y][1]));
                         force = 0;
@@ -689,12 +689,7 @@ int main(int argc, char* args[])
                     case SDLK_ESCAPE:
                         quit = true;
                         break;
-                    case SDLK_z:
-                        camera.setPos(camera.getx(),camera.gety() + 1,camera.getz());
-                        break;
-                    case SDLK_s:
-                        camera.setPos(camera.getx(),camera.gety() - 1,camera.getz());
-                        break;
+
                     case SDLK_RIGHT:
                         camera.setPos(camera.getx(),camera.gety(),camera.getz() - 1);
                         camera.lookAt(camera.getlookx(),camera.getlooky(),camera.getlookz() - 1);
@@ -717,7 +712,7 @@ int main(int argc, char* args[])
                         if(force>=35) force = 35;
                         std::cout << "force : " << force << std::endl;
                         break;
-                    case SDLK_4:
+                    case SDLK_n:
                         force += 1;
                         std::cout << "force : " << force << std::endl;
                         break;
@@ -726,6 +721,9 @@ int main(int argc, char* args[])
                         pCanne->pSphere->getAnim().setPos(zerozero);
 
                         break;
+                    case SDLK_0:
+                        pCanne->y = 0;
+                        pCanne->x = 0;
 
                     case SDLK_i:
                         pCanne->y++;
@@ -734,8 +732,38 @@ int main(int argc, char* args[])
                     case SDLK_k:
                         pCanne->y--;
                         if(pCanne->y <= -1 ) pCanne->y = 8;
-
                         break;
+
+
+
+                    case SDLK_1:
+                        pCanne->y = 3;
+                        break;
+                    case SDLK_2:
+                        pCanne->y = 0;
+                        break;
+                    case SDLK_3:
+                        pCanne->y = 6;
+                        break;
+                    case SDLK_4:
+                        pCanne->y = 4;
+                        break;
+                    case SDLK_5:
+                        pCanne->y = 1;
+                        break;
+                    case SDLK_6:
+                        pCanne->y = 7;
+                        break;
+                    case SDLK_7:
+                        pCanne->y = 5;
+                        break;
+                    case SDLK_8:
+                        pCanne->y = 2;
+                        break;
+                    case SDLK_9:
+                        pCanne->y = 8;
+                        break;
+
                     case SDLK_l:
                         pCanne->x++;
                         if(pCanne->x >= 3 ) pCanne->x = 0;
