@@ -370,7 +370,7 @@ int main(int argc, char* args[])
 
         // Sol (NE PAS ENLEVER)
         Plan *pSol = NULL;
-        pSol = new Plan(Vector(1,0,0), Vector(0,0,1), Point(-50, -3, -50), 100, 100, WHITE); // For the animation
+        pSol = new Plan(Vector(1,0,0), Vector(0,0,1), Point(-100, -10, -100), 200, 200, WHITE); // For the animation
         pSol->setTexture(textureid_sol);
         forms_list[number_of_forms] = pSol;
         engine.addForm(pSol);
@@ -382,16 +382,6 @@ int main(int argc, char* args[])
         Sphere* bouleBlanc = NULL;
         Animation sphAnim;
 
-        pSphere = new Sphere(0.1, WHITE);
-        pSphere->setRadius (0.3);
-        sphAnim.setPos(Point(0,pSphere->getRadius() + 2,0));
-        //sphAnim.setPhi(0.1); // angle en degre
-        //sphAnim.setTheta(0.2); // angle en degre
-        sphAnim.setSpeed(Vector(15,0,0)); // v initiale colineaire a Ox
-        pSphere->setAnim(sphAnim);
-        pSphere->setTexture(textureid_1);
-        pSphere->getAnim().setPhi(1);
-        forms_list[number_of_forms] = pSphere;
         bouleBlanc = new Sphere(0.1, WHITE);
         bouleBlanc->setRadius (0.3);
         sphAnim.setPos(Point(-9,bouleBlanc->getRadius() + 0.2,0));
