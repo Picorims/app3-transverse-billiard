@@ -425,7 +425,7 @@ int main(int argc, char* args[])
         for (k = 0; k < 30; k++) { // nombre de boules crées aléatoireement pour tester
             pSphere = new Sphere(0.2, RED);
             Animation sphAnimk;
-            sphAnimk.setPos(Point(randf(5),randf(5)+7,randf(5)));
+            sphAnimk.setPos(Point(randf(5),1,randf(5)));
             sphAnimk.setSpeed(Vector(sphAnimk.getPos(), Point(0,0,0))); // v initiale dans plan x0y
             pSphere->setAnim(sphAnimk);
             pSphere->setTexture(textureid_2);
