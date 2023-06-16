@@ -373,13 +373,13 @@ int main(int argc, char* args[])
         engine.addForm(pFace);*/
 
 
-        // Table *pTable = NULL;
-        // pTable = new Table(2.24*10, 1.12*10, 0.1*10, forms_list, number_of_forms, GREEN, ORANGE, engine);
+        Table *pTable = NULL;
+        pTable = new Table(2.24*10, 1.12*10, 0.1*10, forms_list, number_of_forms, GREEN, ORANGE, engine);
         //pTable = new Table(3, 2, 0.5, forms_list, number_of_forms, GREEN, ORANGE);
 
         // Sol (NE PAS ENLEVER)
         Plan *pSol = NULL;
-        pSol = new Plan(Vector(1,0,0), Vector(0,0,1), Point(-50, -3, -50), 100, 100, YELLOW); // For the animation
+        pSol = new Plan(Vector(1,0,0), Vector(0,0,1), Point(-50, -3, -50), 100, 100, WHITE); // For the animation
         pSol->setTexture(textureid_sol);
         forms_list[number_of_forms] = pSol;
         engine.addForm(pSol);
@@ -460,37 +460,175 @@ int main(int argc, char* args[])
         engine.addForm(pFace5);
 */
         // Spheres
-
-        Sphere* pSphere = NULL;
+        // Boule Blanche
+        Sphere* bouleBlanc = NULL;
         Animation sphAnim;
-        pSphere = new Sphere(0.1, WHITE);
-        pSphere->setRadius (0.3);
-        sphAnim.setPos(Point(0,pSphere->getRadius() + 2,0));
-        //sphAnim.setPhi(0.1); // angle en degre
-        //sphAnim.setTheta(0.2); // angle en degre
-        sphAnim.setSpeed(Vector(0,0,0)); // v initiale colineaire a Ox
-        pSphere->setAnim(sphAnim);
-        pSphere->setTexture(textureid_1);
-        pSphere->getAnim().setPhi(1);
-        forms_list[number_of_forms] = pSphere;
+        bouleBlanc = new Sphere(0.1, WHITE);
+        bouleBlanc->setRadius (0.3);
+        sphAnim.setPos(Point(-9,bouleBlanc->getRadius() + 0.2,0));
+        //sphAnim.setSpeed(Vector(sphAnim.getPos(), Point(40,0,0))); // v initiale dans plan x0y
+        bouleBlanc->setAnim(sphAnim);
+        forms_list[number_of_forms] = bouleBlanc;
         number_of_forms++;
+        engine.addForm(bouleBlanc);
 
-        engine.addForm(pSphere);
+        // Boule Rouge rangé de 5
+        Sphere* bouleRouge = NULL;
+        Animation sphAnim1;
+        bouleRouge = new Sphere(0.1, RED);
+        bouleRouge->setRadius (0.3);
+        sphAnim1.setPos(Point(9,bouleRouge->getRadius() + 0.2,0));
+        bouleRouge->setAnim(sphAnim1);
+        forms_list[number_of_forms] = bouleRouge;
+        number_of_forms++;
+        engine.addForm(bouleRouge);
 
-        unsigned short k = 0;
-        srand(time(NULL));
-        for (k = 0; k < 0; k++) { // nombre de boules crées aléatoireement pour tester
-            pSphere = new Sphere(0.2, RED);
-            Animation sphAnimk;
-            sphAnimk.setPos(Point(randf(5),randf(5),randf(5)));
-            sphAnimk.setSpeed(Vector(sphAnimk.getPos(), Point(0,0,0))); // v initiale dans plan x0y
-            pSphere->setAnim(sphAnimk);
-            pSphere->setTexture(textureid_2);
-            forms_list[number_of_forms] = pSphere;
-            number_of_forms++;
+        Animation sphAnim2;
+        bouleRouge = new Sphere(0.1, RED);
+        bouleRouge->setRadius (0.3);
+        sphAnim2.setPos(Point(9,bouleRouge->getRadius() + 0.2,0.6));
+        bouleRouge->setAnim(sphAnim2);
+        forms_list[number_of_forms] = bouleRouge;
+        number_of_forms++;
+        engine.addForm(bouleRouge);
 
-            engine.addForm(pSphere);
-        }
+        Animation sphAnim3;
+        bouleRouge = new Sphere(0.1, RED);
+        bouleRouge->setRadius (0.3);
+        sphAnim3.setPos(Point(9,bouleRouge->getRadius() + 0.2,-0.6));
+        bouleRouge->setAnim(sphAnim3);
+        forms_list[number_of_forms] = bouleRouge;
+        number_of_forms++;
+        engine.addForm(bouleRouge);
+
+        Animation sphAnim4;
+        bouleRouge = new Sphere(0.1, RED);
+        bouleRouge->setRadius (0.3);
+        sphAnim4.setPos(Point(9,bouleRouge->getRadius() + 0.2,-1.2));
+        bouleRouge->setAnim(sphAnim4);
+        forms_list[number_of_forms] = bouleRouge;
+        number_of_forms++;
+        engine.addForm(bouleRouge);
+
+        Animation sphAnim5;
+        bouleRouge = new Sphere(0.1, RED);
+        bouleRouge->setRadius (0.3);
+        sphAnim5.setPos(Point(9,bouleRouge->getRadius() + 0.2,1.2));
+        bouleRouge->setAnim(sphAnim5);
+        forms_list[number_of_forms] = bouleRouge;
+        number_of_forms++;
+        engine.addForm(bouleRouge);
+
+        // Boule Rouge rangé de 4
+        Animation sphAnim6;
+        bouleRouge = new Sphere(0.1, RED);
+        bouleRouge->setRadius (0.3);
+        sphAnim6.setPos(Point(8.6,bouleRouge->getRadius() + 0.2,0.3));
+        bouleRouge->setAnim(sphAnim6);
+        forms_list[number_of_forms] = bouleRouge;
+        number_of_forms++;
+        engine.addForm(bouleRouge);
+
+        Animation sphAnim7;
+        bouleRouge = new Sphere(0.1, RED);
+        bouleRouge->setRadius (0.3);
+        sphAnim7.setPos(Point(8.6,bouleRouge->getRadius() + 0.2,-0.3));
+        bouleRouge->setAnim(sphAnim7);
+        forms_list[number_of_forms] = bouleRouge;
+        number_of_forms++;
+        engine.addForm(bouleRouge);
+
+        Animation sphAnim8;
+        bouleRouge = new Sphere(0.1, RED);
+        bouleRouge->setRadius (0.3);
+        sphAnim8.setPos(Point(8.6,bouleRouge->getRadius() + 0.2,0.9));
+        bouleRouge->setAnim(sphAnim8);
+        forms_list[number_of_forms] = bouleRouge;
+        number_of_forms++;
+        engine.addForm(bouleRouge);
+
+        Animation sphAnim9;
+        bouleRouge = new Sphere(0.1, RED);
+        bouleRouge->setRadius (0.3);
+        sphAnim9.setPos(Point(8.6,bouleRouge->getRadius() + 0.2,-0.9));
+        bouleRouge->setAnim(sphAnim9);
+        forms_list[number_of_forms] = bouleRouge;
+        number_of_forms++;
+        engine.addForm(bouleRouge);
+
+        // Boule Rouge rangé de 3
+        Animation sphAnim10;
+        bouleRouge = new Sphere(0.1, RED);
+        bouleRouge->setRadius (0.3);
+        sphAnim10.setPos(Point(8.2,bouleRouge->getRadius() + 0.2,0));
+        bouleRouge->setAnim(sphAnim10);
+        forms_list[number_of_forms] = bouleRouge;
+        number_of_forms++;
+        engine.addForm(bouleRouge);
+
+        Animation sphAnim11;
+        bouleRouge = new Sphere(0.1, RED);
+        bouleRouge->setRadius (0.3);
+        sphAnim11.setPos(Point(8.2,bouleRouge->getRadius() + 0.2,0.6));
+        bouleRouge->setAnim(sphAnim11);
+        forms_list[number_of_forms] = bouleRouge;
+        number_of_forms++;
+        engine.addForm(bouleRouge);
+
+        Animation sphAnim12;
+        bouleRouge = new Sphere(0.1, RED);
+        bouleRouge->setRadius (0.3);
+        sphAnim12.setPos(Point(8.2,bouleRouge->getRadius() + 0.2,-0.6));
+        bouleRouge->setAnim(sphAnim12);
+        forms_list[number_of_forms] = bouleRouge;
+        number_of_forms++;
+        engine.addForm(bouleRouge);
+
+        // Boule Rouge rangé de 2
+        Animation sphAnim13;
+        bouleRouge = new Sphere(0.1, RED);
+        bouleRouge->setRadius (0.3);
+        sphAnim13.setPos(Point(7.8,bouleRouge->getRadius() + 0.2,-0.3));
+        bouleRouge->setAnim(sphAnim13);
+        forms_list[number_of_forms] = bouleRouge;
+        number_of_forms++;
+        engine.addForm(bouleRouge);
+
+        Animation sphAnim14;
+        bouleRouge = new Sphere(0.1, RED);
+        bouleRouge->setRadius (0.3);
+        sphAnim14.setPos(Point(7.8,bouleRouge->getRadius() + 0.2,0.3));
+        bouleRouge->setAnim(sphAnim14);
+        forms_list[number_of_forms] = bouleRouge;
+        number_of_forms++;
+        engine.addForm(bouleRouge);
+
+        // Boule Rouge rangé de 1
+        Animation sphAnim15;
+        bouleRouge = new Sphere(0.1, RED);
+        bouleRouge->setRadius (0.3);
+        sphAnim15.setPos(Point(7.4,bouleRouge->getRadius() + 0.2,0));
+        bouleRouge->setAnim(sphAnim15);
+        forms_list[number_of_forms] = bouleRouge;
+        number_of_forms++;
+        engine.addForm(bouleRouge);
+
+
+        // unsigned short k = 0;
+        // srand(time(NULL));
+
+        // for (k = 0; k < 0; k++) { // nombre de boules crées aléatoireement pour tester
+        //     pSphere = new Sphere(0.2, RED);
+        //     Animation sphAnimk;
+        //     sphAnimk.setPos(Point(randf(5),randf(5),randf(5)));
+        //     sphAnimk.setSpeed(Vector(sphAnimk.getPos(), Point(0,0,0))); // v initiale dans plan x0y
+        //     pSphere->setAnim(sphAnimk);
+        //     pSphere->setTexture(textureid_2);
+        //     forms_list[number_of_forms] = pSphere;
+        //     number_of_forms++;
+
+        //     engine.addForm(pSphere);
+        // }
 
         // Get first "current time"
         previous_time_anim = previous_time_render = SDL_GetTicks();
@@ -593,7 +731,7 @@ int main(int argc, char* args[])
                         camera.lookAt(camera.getlookx(),camera.getlooky() - 1,camera.getlookz());
                         break;
                     case SDLK_m:
-                        pSphere->getAnim().setSpeed(Vector(-5,5,0));
+                        bouleBlanc->getAnim().setSpeed(Vector(35,0,0));
                         break;
                     default:
                         break;
