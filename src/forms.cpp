@@ -388,7 +388,7 @@ Canne::Canne(Sphere* org ,Color cl){
     pSphere = org;
     origin = org->getAnim().getPos();
     dt = 0;
-    x = 1; y = 1 ; z = 1;
+    x = 0 ; y = 1 ; z = 1;
 }
 void Canne::update(double delta_t)
 {

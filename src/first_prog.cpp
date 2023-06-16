@@ -415,6 +415,7 @@ int main(int argc, char* args[])
 
         // Spheres
         // Boule Blanche
+        Sphere* pSphere = NULL;
         Sphere* bouleBlanc = NULL;
         Animation sphAnim;
 
@@ -578,9 +579,9 @@ int main(int argc, char* args[])
         forms_list[number_of_forms] = bouleRouge;
         number_of_forms++;
         engine.addForm(bouleRouge);
-      
+
         Canne* pCanne = NULL;
-        pCanne = new Canne(pSphere,GREEN);
+        pCanne = new Canne(bouleBlanc,GREEN);
         forms_list[number_of_forms] = pCanne;
         number_of_forms++;
 
@@ -665,6 +666,15 @@ int main(int argc, char* args[])
 
                         pCanne->pSphere->getAnim().setSpeed(Vector(force*-1*pCanne->coord[pCanne->x][pCanne->y][0],force*-1*pCanne->coord[pCanne->x][pCanne->y][2],force*-1*pCanne->coord[pCanne->x][pCanne->y][1]));
                         force = 0;
+
+
+                    }
+                    else if(key_pressed == SDLK_4){
+
+                        pCanne->pSphere->getAnim().setSpeed(Vector(force*-1*pCanne->coord[pCanne->x][pCanne->y][0],force*-1*pCanne->coord[pCanne->x][pCanne->y][2],force*-1*pCanne->coord[pCanne->x][pCanne->y][1]));
+                        force = 0;
+
+
                     }
                     break;
 
@@ -703,11 +713,16 @@ int main(int argc, char* args[])
                         break;
 
                     case SDLK_m:
-                        force += 2;
+                        force += 1;
+                        if(force>=35) force = 35;
+                        std::cout << "force : " << force << std::endl;
+                        break;
+                    case SDLK_4:
+                        force += 1;
                         std::cout << "force : " << force << std::endl;
                         break;
                     case SDLK_o:
-
+                        pCanne->pSphere->getAnim().setSpeed(Vector(0,0,0));
                         pCanne->pSphere->getAnim().setPos(zerozero);
 
                         break;
