@@ -11,22 +11,27 @@
 *.gch
 *.pch
 
-# Compiled Dynamic libraries
-*.so
-*.dylib
-*.dll
+# Compiled Dynamic libraries (useful for us so it is commented)
+#*.so
+#*.dylib
+#*.dll
 
 # Fortran module files
 *.mod
 *.smod
 
-# Compiled Static libraries
-*.lai
-*.la
-*.a
-*.lib
+# Compiled Static libraries (useful for us so it is commented)
+#*.lai
+#*.la
+#*.a
+#*.lib
 
 # Executables
 *.exe
 *.out
 *.app
+
+# Code::Blocks
+*.depend
+*.layout
+*.bmarks
