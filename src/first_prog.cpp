@@ -587,7 +587,7 @@ int main(int argc, char* args[])
 
         unsigned short k = 0;
         srand(time(NULL));
-        for (k = 0; k < 30; k++) { // nombre de boules crées aléatoireement pour tester
+        for (k = 0; k < 0; k++) { // nombre de boules crées aléatoireement pour tester
             pSphere = new Sphere(0.2, RED);
             Animation sphAnimk;
             sphAnimk.setPos(Point(randf(5),1,randf(5)));
