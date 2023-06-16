@@ -38,6 +38,10 @@ class Form
 protected:
     Color col;
     Animation anim;
+    double theta_x;
+    double theta_y;
+    double theta_z;
+
 public:
     Animation& getAnim() {return anim;}
     void setAnim(Animation ani) {anim = ani;}
@@ -48,6 +52,13 @@ public:
     virtual void update(double delta_t) = 0;
     // Virtual method : Form is a generic type, only setting color and reference position
     virtual void render();
+    double get_theta_x() {return theta_x;}
+    double get_theta_y() {return theta_y;}
+    double get_theta_z() {return theta_z;}
+
+    void set_theta_x(double val) {theta_x = val;}
+    void set_theta_y(double val) {theta_y = val;}
+    void set_theta_z(double val) {theta_z = val;}
 };
 
 

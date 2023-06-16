@@ -17,9 +17,12 @@ void Form::render()
     Point org = anim.getPos();
     glTranslated(org.x, org.y, org.z);
 
-    glRotated(anim.getTheta(), 1,0,0);
-    glRotated(anim.getPhi(), 0,1,0);
+    // this->set_theta_x(1);
+    this->set_theta_y(1);
+    // this->set_theta_z(1);
 
+    glRotated(anim.getTheta(), this->get_theta_x(),this->get_theta_y(),this->get_theta_z());  
+    printf("%d\n",anim.getTheta());
     glColor3f(col.r, col.g, col.b);
 }
 
@@ -55,23 +58,65 @@ void Sphere::update(double delta_t)
     // Exemple d'animation non liee a de la physique
     // Pourquoi la sphere rouge ne tourne t elle pas sur elle meme
     // comme le fait la sphere Terre ?
-    double angle=this->anim.getPhi();
-    if(angle>0){
-        angle=angle+delta_t*10;
-    }
-    while(angle>360){
-            angle=angle-360;
-    }
-    this->anim.setPhi(angle);
+    
+    double r = this->radius;
 
-    angle=this->anim.getTheta();
-    if(angle>0){
-        angle=angle+delta_t*100;
+    Vector sensz = this->anim.getSpeed();
+    double anglez = 0;
+    Vector sensx = Vector(0,1,0);
+    double anglex = 0;
+
+    Vector nTheta = sensz^sensx;
+
+    this->set_theta_x(nTheta.x);
+    this->set_theta_y(nTheta.y);
+    this->set_theta_z(nTheta.z);
+
+    anglex=(anglex+delta_t*100*sensz.norm())/(2*std::acos(-1)*r);
+    while(anglex>360){
+        anglex=anglex-360;
     }
-    while(angle>360){
-            angle=angle-360;
-    }
-    this->anim.setTheta(angle);
+    this->anim.setTheta(this->anim.getTheta() - anglex);
+
+    //rotation sur x
+    // if(sensx>0){
+    //     anglex=(anglex+delta_t*100*sensx)/(2*std::acos(-1)*r);
+    // }
+    // if(sensx<0){
+    //     anglex=(anglex+delta_t*-100*sensx)/(2*std::acos(-1)*r);
+    // }
+    // while(anglex>360){
+    //         anglex=anglex-360;
+    // }
+    // if(sensx==0){
+    //     this->anim.setRho(0);
+    // }
+    // if(sensx>0){
+    //     this->anim.setRho(this->anim.getRho() - anglex);
+    // }
+    // if(sensx<0){
+    //     this->anim.setRho(this->anim.getRho() + anglex);
+    // }
+
+    //rotation sur z
+    // if(sensz>0){
+    //     anglez=(anglez+delta_t*100*sensz)/(2*std::acos(-1)*r);
+    // }
+    // if(sensz<0){
+    //     anglez=(anglez+delta_t*-100*sensz)/(2*std::acos(-1)*r);
+    // }
+    // while(anglez>360){
+    //         anglez=anglez-360;
+    // }
+    // if(sensz==0){
+    //     this->anim.setTheta(0);
+    // }
+    // if(sensz>0){
+    //     this->anim.setTheta(this->anim.getTheta() + anglez);
+    // }
+    // if(sensz<0){
+    //     this->anim.setTheta(this->anim.getTheta() - anglez);
+    // }
 }
 
 

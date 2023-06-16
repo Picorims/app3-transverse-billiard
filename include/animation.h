@@ -7,7 +7,7 @@
 class Animation
 {
 private:
-    double phi, theta; // Azimuthal and polar angles for local coordinate system orientation
+    double phi, theta, rho; // Azimuthal and polar angles for local coordinate system orientation
     Vector acc, spd; //  Instantaneous acceleration and speed
     Point pos; // Instantaneous position of the local coordinate system origin
 
@@ -19,8 +19,10 @@ public:
               );
     double getPhi() const {return phi;}
     double getTheta() const {return theta;}
+    double getRho() const {return rho;}
     void setPhi(double agl) {phi = agl;}
     void setTheta(double agl) {theta = agl;}
+    void setRho(double agl) {rho = agl;}
     Vector getAccel() const {return acc;}
     Vector getSpeed() const {return spd;}
     void setAccel(Vector vect) {acc = vect;}
