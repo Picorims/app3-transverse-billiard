@@ -310,6 +310,9 @@ int main(int argc, char* args[])
     int mousePosition[4] = {0,0,0,0}; // position 0 and 1 are the current tick mouse position while 2 and 3 are previous tick position
     Camera camera;
     bool mClick = false;
+    //simple float permettant de déterminer a force à appliquer dans la balle blanche
+    float force = 0;
+    Point zerozero(0,1,0);
 
     // The window we'll be rendering to
     SDL_Window* gWindow = NULL;
@@ -420,6 +423,11 @@ int main(int argc, char* args[])
 
         engine.addForm(pSphere);
 
+        Canne* pCanne = NULL;
+        pCanne = new Canne(pSphere,GREEN);
+        forms_list[number_of_forms] = pCanne;
+        number_of_forms++;
+
         unsigned short k = 0;
         srand(time(NULL));
         for (k = 0; k < 30; k++) { // nombre de boules crées aléatoireement pour tester
@@ -496,6 +504,14 @@ int main(int argc, char* args[])
                     mClick = false;
                     break;
 
+                case SDL_KEYUP:
+                    if(key_pressed == SDLK_m){
+
+                        pCanne->pSphere->getAnim().setSpeed(Vector(force*-1*pCanne->coord[pCanne->x][pCanne->y][0],force*-1*pCanne->coord[pCanne->x][pCanne->y][2],force*-1*pCanne->coord[pCanne->x][pCanne->y][1]));
+                        force = 0;
+                    }
+                    break;
+
                 case SDL_KEYDOWN:
                     // Handle key pressed with current mouse position
                     SDL_GetMouseState( &x, &y );
@@ -529,9 +545,36 @@ int main(int argc, char* args[])
                         camera.setPos(camera.getx(),camera.gety() - 1,camera.getz());
                         camera.lookAt(camera.getlookx(),camera.getlooky() - 1,camera.getlookz());
                         break;
+
                     case SDLK_m:
-                        pSphere->getAnim().setSpeed(Vector(-15,0,0));
+                        force += 2;
+                        std::cout << "force : " << force << std::endl;
                         break;
+                    case SDLK_o:
+
+                        pCanne->pSphere->getAnim().setPos(zerozero);
+                        break;
+
+                    case SDLK_i:
+                        pCanne->y++;
+                        if(pCanne->y >= 9 ) pCanne->y = 0;
+                        break;
+                    case SDLK_k:
+                        pCanne->y--;
+                        if(pCanne->y <= -1 ) pCanne->y = 8;
+
+                        break;
+                    case SDLK_l:
+                        pCanne->x++;
+                        if(pCanne->x >= 3 ) pCanne->x = 0;
+
+                        break;
+                    case SDLK_j:
+                        pCanne->x--;
+                        if(pCanne->x <= -1 ) pCanne->x = 2;
+
+                        break;
+
                     default:
                         break;
                     }

@@ -136,6 +136,8 @@ void Plan::render()
     glEnable(GL_TEXTURE_2D);
     glBindTexture(GL_TEXTURE_2D, texture_id);
 
+
+
     // Actions communes a toutes les formes
     Form::render();
     glBegin(GL_QUADS);
@@ -380,4 +382,38 @@ void CollisionEngine::collide()
             }
         }
     }
+}
+
+Canne::Canne(Sphere* org ,Color cl){
+    col = cl;
+    pSphere = org;
+    origin = org->getAnim().getPos();
+    dt = 0;
+    x = 1; y = 1 ; z = 1;
+}
+void Canne::update(double delta_t)
+{
+    //Point test(0,0,0);
+    //origin = test;
+    origin = pSphere->getAnim().getPos();
+    //pSphere->getAnim().setSpeed()
+
+}
+
+void Canne::render()
+{
+
+    glBegin(GL_LINES);
+    {
+
+        glColor3f(1.0f, 0.0f, 0.0f);
+        glVertex3f(origin.x, origin.y, origin.z);
+        glVertex3f(origin.x + coord[x][y][0], origin.y + coord[x][y][2], origin.z + coord[x][y][1]);
+        //glRotated(dt, 1, 1, 1);
+        //glRotated(dt, 0, 1, 0);
+        //glRotated(dt, 1, 0, 0);
+        //dt++;
+    }
+    glEnd();
+
 }
