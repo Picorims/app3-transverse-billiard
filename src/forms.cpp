@@ -17,12 +17,9 @@ void Form::render()
     Point org = anim.getPos();
     glTranslated(org.x, org.y, org.z);
 
-    // this->set_theta_x(1);
     this->set_theta_y(1);
-    // this->set_theta_z(1);
 
-    glRotated(anim.getTheta(), this->get_theta_x(),this->get_theta_y(),this->get_theta_z());  
-    printf("%d\n",anim.getTheta());
+    glRotated(anim.getTheta(), this->get_theta_x(),this->get_theta_y(),this->get_theta_z());
     glColor3f(col.r, col.g, col.b);
 }
 
@@ -58,7 +55,7 @@ void Sphere::update(double delta_t)
     // Exemple d'animation non liee a de la physique
     // Pourquoi la sphere rouge ne tourne t elle pas sur elle meme
     // comme le fait la sphere Terre ?
-    
+
     double r = this->radius;
 
     Vector sensz = this->anim.getSpeed();
@@ -77,46 +74,6 @@ void Sphere::update(double delta_t)
         anglex=anglex-360;
     }
     this->anim.setTheta(this->anim.getTheta() - anglex);
-
-    //rotation sur x
-    // if(sensx>0){
-    //     anglex=(anglex+delta_t*100*sensx)/(2*std::acos(-1)*r);
-    // }
-    // if(sensx<0){
-    //     anglex=(anglex+delta_t*-100*sensx)/(2*std::acos(-1)*r);
-    // }
-    // while(anglex>360){
-    //         anglex=anglex-360;
-    // }
-    // if(sensx==0){
-    //     this->anim.setRho(0);
-    // }
-    // if(sensx>0){
-    //     this->anim.setRho(this->anim.getRho() - anglex);
-    // }
-    // if(sensx<0){
-    //     this->anim.setRho(this->anim.getRho() + anglex);
-    // }
-
-    //rotation sur z
-    // if(sensz>0){
-    //     anglez=(anglez+delta_t*100*sensz)/(2*std::acos(-1)*r);
-    // }
-    // if(sensz<0){
-    //     anglez=(anglez+delta_t*-100*sensz)/(2*std::acos(-1)*r);
-    // }
-    // while(anglez>360){
-    //         anglez=anglez-360;
-    // }
-    // if(sensz==0){
-    //     this->anim.setTheta(0);
-    // }
-    // if(sensz>0){
-    //     this->anim.setTheta(this->anim.getTheta() + anglez);
-    // }
-    // if(sensz<0){
-    //     this->anim.setTheta(this->anim.getTheta() - anglez);
-    // }
 }
 
 
@@ -125,7 +82,6 @@ void Sphere::render()
     GLUquadric *quad;
     quad = gluNewQuadric();
 
-    // Complete this part
     Form::render(); // Position the form and assign its color
 
     // Mise en route de la texture associee
@@ -156,11 +112,7 @@ Plan::Plan(Vector v1, Vector v2, Point org, double l, double w, Color cl)
 
 void Plan::update(double delta_t)
 {
-    // Angles update for the animation example
-    // Ceci n est qu un exemple d animation
-    // Aucune physique particuliere n est utilisee ici
-    // anim.setPhi(anim.getPhi()+1);
-    // anim.setTheta(anim.getTheta()+0.5);
+    // nothing here
 }
 
 
@@ -458,11 +410,7 @@ Canne::Canne(Sphere* org ,Color cl){
 }
 void Canne::update(double delta_t)
 {
-    //Point test(0,0,0);
-    //origin = test;
     origin = pSphere->getAnim().getPos();
-    //pSphere->getAnim().setSpeed()
-
 }
 
 void Canne::render()
@@ -470,14 +418,9 @@ void Canne::render()
 
     glBegin(GL_LINES);
     {
-
         glColor3f(1.0f, 0.0f, 0.0f);
         glVertex3f(origin.x, origin.y, origin.z);
         glVertex3f(origin.x + coord[x][y][0], origin.y + coord[x][y][2], origin.z + coord[x][y][1]);
-        //glRotated(dt, 1, 1, 1);
-        //glRotated(dt, 0, 1, 0);
-        //glRotated(dt, 1, 0, 0);
-        //dt++;
     }
     glEnd();
 
